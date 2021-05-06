@@ -1,4 +1,5 @@
 import {useState,useEffect} from 'react';
+import {Link} from 'react-router-dom';
 
 import "../CSS-Layout/Right-menu.css";
 
@@ -17,7 +18,16 @@ export default function RightMenuComp(props){
     return(
         <div className="right-menu">
             <TopInformation Infor={Infor}/>
-            <button onClick = {()=> props.ChangeEvent("create-question")}>Tạo câu hỏi</button>
+            {
+                props.status ?    
+                <Link to = '/create-question'>
+                    <button>Tạo câu hỏi</button>
+                </Link>
+                :
+                <Link to = '/sign-in'>
+                    <button>Tạo câu hỏi</button>
+                </Link>
+            }
             <hr/>
             <RankingComp user={User}/>
             <BottomComp />

@@ -1,15 +1,30 @@
+import {Link} from "react-router-dom";
+
+
 import "../CSS-Layout/Left-menu.css"
 
 export default function LeftMenuComp({ChangeEvent}){
     return(
         <div className="left-menu">
             <ul>
-                <li onClick={() => ChangeEvent("home")}>Trang chủ </li>
-                <li onClick={() => ChangeEvent("questions")}>Câu hỏi</li>
-                <li onClick={() => ChangeEvent("badges")}>Danh hiệu</li>
-                <li onClick={() => ChangeEvent("communities")}>Cộng đồng</li>
-                <li onClick={() => ChangeEvent("tags")}>Thẻ</li>
-                <li onClick={() => ChangeEvent("users")}>Người dùng</li>
+                <Link to = '/'>
+                    <li>Trang chủ </li>
+                </Link>
+                <Link to = '/questions'>
+                    <li>Câu hỏi</li>
+                </Link>
+                <Link to = '/badges'>
+                    <li>Danh hiệu</li>
+                </Link>
+                <Link to = '/communities'>
+                    <li>Cộng đồng</li>
+                </Link>
+                <Link to = '/tags'>
+                    <li>Thẻ</li>
+                </Link>
+                <Link to = '/users'>
+                    <li>Người dùng</li>
+                </Link>
             </ul>
         </div>
     )

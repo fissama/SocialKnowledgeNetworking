@@ -3,7 +3,7 @@
     display:flexbox;
     background-color: #EEEEEE;
 }
-.App > a{
+#scroll-up{
     position: fixed;
     bottom:5px;
     right:5px;
@@ -11,7 +11,7 @@
     color:red;
     font-size: 25px;
 }
-.App > i{
+.App > a{
     position: fixed;
     bottom:10px;
     right:35px;
@@ -57,8 +57,8 @@
 }
 .content-wrapper .center-wrapper{
     width:70%;
-    height: 2000px;
-    border:2px green solid;
+    height: auto;
+    background-color: white;
 }
 .content-wrapper .right-menu{
     width:28%;

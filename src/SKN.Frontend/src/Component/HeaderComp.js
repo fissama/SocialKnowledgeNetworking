@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-
+import {Link} from 'react-router-dom';
 import '../CSS-Layout/Header.css';
 
 export default function HeaderComp(props){
@@ -20,11 +20,15 @@ export default function HeaderComp(props){
         )
 }
 
-export function NotLogin({ChangeEvent}){
+export function NotLogin(){
     return(
         <div className="sign-in-up">
-            <button id="sign-in" onClick={()=>ChangeEvent("sign-in")}>Sign in</button>
-            <button id="sign-up" onClick={()=>ChangeEvent("sign-up")}>Sign up</button>
+            <Link to = '/sign-in'>
+                <button id="sign-in">Sign in</button>
+            </Link>
+            <Link to = '/sign-up'>
+                <button id="sign-up">Sign up</button>
+            </Link>
         </div>
     )
 }

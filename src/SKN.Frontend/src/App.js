@@ -1,4 +1,6 @@
 import {useState,useEffect,useRef,useContext} from 'react';
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+
 import './App.css';
 
 import HeaderComp from './Component/HeaderComp.js';
@@ -9,20 +11,20 @@ import RightMenuComp from './Component/RightMenuComp.js';
 
 
 function App() {
-  var [status,setStatus] = useState(false); // True là đã đăng nhập
-  var [event, setEvent] = useState([]
-    /* "sign-in": false,
+  var [status,setStatus] = useState(true); // True là đã đăng nhập
+  /* var [event, setEvent] = useState([]
+    "sign-in": false,
     "sign-up": false,
     "home": false,
     "questions":false,
     "badges":false,
     "communities":false,
     "tags": false,
-    "users":false */
+    "users":false
   );
   const ChangeEvent = (x) => {
     setEvent([x]);
-  }
+  } */
   // xử lý thanh cuộn
   window.onscroll = function() {myFunction()};
   function myFunction() {
@@ -35,21 +37,24 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <HeaderComp status={status} ChangeEvent={ChangeEvent}/>
-      <div className="wrapper">
-        <LeftMenuComp ChangeEvent={ChangeEvent}/>
-        <div className="content-wrapper">
-          <CenterComp event={event}/>
-          <RightMenuComp ChangeEvent={ChangeEvent}/>
+    <Router>
+      <div className="App">
+        <HeaderComp status={status} />
+        <div className="wrapper">
+          <LeftMenuComp />
+          <div className="content-wrapper">
+            <CenterComp />
+            <RightMenuComp status={status}/>
+          </div>
         </div>
+        {
+          status ? <Link to = 'create-question'>
+            <i class="fas fa-pen"></i> </Link>  : <span></span>
+        }
+        <a href="#center" id="scroll-up"><i class="fas fa-arrow-up"></i></a>  
+        <FooterComp />
       </div>
-      {
-        status ? <i class="fas fa-pen" onClick={()=>ChangeEvent("create-question")}></i> : <span></span>
-      }
-      <a href="#center" id="scroll-up"><i class="fas fa-arrow-up"></i></a>  
-      <FooterComp />
-    </div>
+    </Router>
   );
 }
 

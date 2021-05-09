@@ -1,4 +1,7 @@
-CREATE DATABASE SocialKnowledgeNetworking;
+CREATE DATABASE `SocialKnowledgeNetworking` CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+use `SocialKnowledgeNetworking`;
+
 create table `setting`(
   `setting_name` NVARCHAR(100) NOT NULL,
   `setting_value` NVARCHAR(100) NOT NULL
@@ -7,7 +10,7 @@ CREATE TABLE `User` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `username` varchar(255),
   `password` varchar(255),
-  `full_name` varchar(255),
+  `full_name` nvarchar(255),
   `email` varchar(255),
   `yearofbirth` int,
   `created_at` timestamp
@@ -20,15 +23,15 @@ CREATE TABLE `Badge` (
 );
 CREATE TABLE `Question` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `title` varchar(255),
-  `content` varchar(255),
+  `title` nvarchar(255),
+  `content` nvarchar(1000),
   `status` int,
-  `User` int,
+  `user_id` int,
   `created_at` timestamp
 );
 CREATE TABLE `ReactQuestion` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `user_id` int,
+  `username` varchar(255),
   `question_id` int,
   `star` int COMMENT 'between 0 and 5',
   `is_like` boolean,
@@ -36,22 +39,22 @@ CREATE TABLE `ReactQuestion` (
 );
 CREATE TABLE `Tag` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `tag_name` varchar(255),
+  `tag_name` nvarchar(255),
   `question_id` int
 );
 CREATE TABLE `Answer` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `shorten_content` varchar(255),
-  `full_content` varchar(255),
+  `shorten_content` nvarchar(255),
+  `full_content` nvarchar(1000),
   `status` int,
   `image_link` varchar(255),
   `question_id` int,
-  `User` int,
+  `user_id` int,
   `created_at` timestamp
 );
 CREATE TABLE `Category` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `category_name` varchar(255)
+  `category_name` nvarchar(255)
 );
 CREATE TABLE `CategoryQuestion` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -63,7 +66,11 @@ ALTER TABLE
 ADD
   FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 ALTER TABLE
-  `ReactQuestion`
+  `Question`
+ADD
+  FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+  ALTER TABLE
+  `Answer`
 ADD
   FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 ALTER TABLE

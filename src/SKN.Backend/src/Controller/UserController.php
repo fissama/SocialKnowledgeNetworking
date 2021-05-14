@@ -16,7 +16,6 @@ class UserController {
         $this->db = $db;
         $this->requestMethod = $requestMethod;
         $this->userId = $userId;
-
         $this->userGateway = new UserGateway($db);
     }
 
@@ -30,7 +29,7 @@ class UserController {
                 $response = $this->createUserFromRequest();
                 break;
             case 'PUT':
-                $response = $this->updateUserFromRequest;
+                $response = $this->updateUserFromRequest($this->userId);
                 break;
             default:
                 $response = $this->notFoundResponse();
@@ -48,7 +47,7 @@ class UserController {
         if (! $this->validateInput($input)) {
             return $this->unprocessableEntityResponse();
         }
-        $result = $this->userGateway->loginUserGW($input);
+        $result = $this->userGateway->loginUserGW($input) == null?FALSE:TRUE;
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
@@ -76,7 +75,7 @@ class UserController {
         if (! $this->validateInput($input)) {
             return $this->unprocessableEntityResponse();
         }
-        $this->categoryGateway->update($id, $input);
+        $this->userGateway->update($id, $input);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = null;
         return $response;

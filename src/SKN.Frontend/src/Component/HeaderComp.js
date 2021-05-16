@@ -7,7 +7,7 @@ export default function HeaderComp(props){
             <div className="header" id="center">
                 <div className="header-wrapper">
                     <img src={process.env.PUBLIC_URL + "./images/Logo.png"} alt="Đây là logo"/>
-                    <h3>Mạng xã hội tri thức trẻ Việt Nam. Nơi trao đổi thông tin và những điều thứ vị trong cuộc sống</h3>
+                    <h3>Mạng xã hội tri thức trẻ Việt Nam. Nơi trao đổi thông tin và những điều thú vị trong cuộc sống</h3>
                     <div className="header-wrapper-right">
                         <form className="search">
                             <input type="text" placeholder="Type Search Words"/>
@@ -35,9 +35,14 @@ export function NotLogin(){
 
 export function Login(props){
     //const url = props.image;
-     const EditProfile = ()=>{ 
+    // Lấy thông tin user
+    const user = {
+        id:1,
+        username:'Mountain Nguyen',
+    } 
+    const EditProfile = ()=>{ 
         var display = document.getElementById("showprofile").style.display;
-        document.getElementById("showprofile").style.display = (display == "none") ? "block" : "none";  
+        document.getElementById("showprofile").style.display = (display === "none") ? "block" : "none";  
    } 
 
     return(
@@ -45,7 +50,7 @@ export function Login(props){
             <img src={process.env.PUBLIC_URL + "./images/default-user-icon.png"} alt="avatar"/>
             <div className="user-name">
                 <span id="span1">Xin chào</span>
-                <span id="span2">Mountain Nguyen</span>
+                <span id="span2">{user.username}</span>
                 <div className="dropdown-content" id="showprofile">
                     <ul>
                         <li><i class="fas fa-user"></i> User Profile</li>

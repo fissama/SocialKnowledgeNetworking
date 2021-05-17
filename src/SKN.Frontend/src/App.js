@@ -12,19 +12,6 @@ import RightMenuComp from './Component/RightMenuComp.js';
 
 function App() {
   var [status,setStatus] = useState(true); // True là đã đăng nhập
-  /* var [event, setEvent] = useState([]
-    "sign-in": false,
-    "sign-up": false,
-    "home": false,
-    "questions":false,
-    "badges":false,
-    "communities":false,
-    "tags": false,
-    "users":false
-  );
-  const ChangeEvent = (x) => {
-    setEvent([x]);
-  } */
   // xử lý thanh cuộn
   window.onscroll = function() {myFunction()};
   function myFunction() {

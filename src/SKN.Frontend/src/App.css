@@ -43,7 +43,7 @@
     clear:both;
 }
 .wrapper .left-menu{
-    width:10%;
+    width:15%;
     height:300px;
     float:left;
     position: sticky;
@@ -58,7 +58,7 @@
 .content-wrapper .center-wrapper{
     width:70%;
     height: auto;
-    background-color: white;
+    background-color: #EEEEEE;
 }
 .content-wrapper .right-menu{
     width:28%;

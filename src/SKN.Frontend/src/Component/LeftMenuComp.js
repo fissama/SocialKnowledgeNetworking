@@ -1,30 +1,30 @@
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 
 import "../CSS-Layout/Left-menu.css"
 
-export default function LeftMenuComp({ChangeEvent}){
+export default function LeftMenuComp(){
     return(
         <div className="left-menu">
             <ul>
-                <Link to = '/'>
+                <NavLink to = '/' activeStyle={{color: "red"}} exact={true}> 
                     <li>Trang chủ </li>
-                </Link>
-                <Link to = '/questions'>
-                    <li>Câu hỏi</li>
-                </Link>
-                <Link to = '/badges'>
+                </NavLink>
+                <NavLink to = '/questions' activeStyle={{color: "red"}}>
+                    <li>Tất cả câu hỏi</li>
+                </NavLink>
+                <NavLink to = '/badges' activeStyle={{color: "red"}}>
                     <li>Danh hiệu</li>
-                </Link>
-                <Link to = '/communities'>
+                </NavLink>
+                <NavLink to = '/communities' activeStyle={{color: "red"}}>
                     <li>Cộng đồng</li>
-                </Link>
-                <Link to = '/tags'>
+                </NavLink>
+                <NavLink to = '/tags' activeStyle={{color: "red"}}>
                     <li>Thẻ</li>
-                </Link>
-                <Link to = '/users'>
+                </NavLink>
+                <NavLink to = '/users' activeStyle={{color: "red"}}>
                     <li>Người dùng</li>
-                </Link>
+                </NavLink>
             </ul>
         </div>
     )

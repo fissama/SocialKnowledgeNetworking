@@ -1,33 +1,22 @@
 import {Switch, Route} from "react-router-dom";
-
 import "../CSS-Layout/Center-wrapper.css";
 
-export default function CenterComp({event}){
-    /* return(
-        <div className="center-wrapper">Đây là Center</div>
-    ) */
-    /* if(event[0] == 'sign-in'){return <Signin/>}
-    else if(event[0] == "sign-up"){return <Signup/>}
-    else if(event[0] == "home"){return <Home/>}
-    else if(event[0] == "questions"){return <Questions/>}
-    else if(event[0] == "badges"){return <Badges/>}
-    else if(event[0] == "communities"){return <Communities/>}
-    else if(event[0] == "tags"){return <Tags/>}
-    else if(event[0] == "users"){return <Users/>}
-    else if(event[0] == "create-question"){return <CreateQuestion/>}
-    else {return <Home /> } */
+import Home from './Home/HomeComp.js';
+import Questions, {DependentQuestion, APIQuestion} from './Questions/QuestionComp.js';
+export default function CenterComp(){
     return(
         <div className="center-wrapper">
             <Switch>
-                <Route path="/" exact component={Home}/>
+                <Route path="/" exact={true} component={Home}/>
                 <Route path="/questions" exact component={Questions}/>
-                <Route path="/badges" exact component={Badges}/>
-                <Route path="/communities" exact component={Communities}/>
-                <Route path="/tags" exact component={Tags}/>
-                <Route path="/users" exact component={Users}/>
-                <Route path="/create-question" exact component={CreateQuestion}/>
-                <Route path="/sign-in" exact component={Signin}/>
-                <Route path="/sign-up" exact component={Signup}/>
+                <Route path="/questions/:id" component={APIQuestion}/>
+                <Route path="/badges"  component={Badges}/>
+                <Route path="/communities"  component={Communities}/>
+                <Route path="/tags"  component={Tags}/>
+                <Route path="/users"  component={Users}/>
+                <Route path="/create-question"  component={CreateQuestion}/>
+                <Route path="/sign-in"  component={Signin}/>
+                <Route path="/sign-up"  component={Signup}/>
             </Switch>
         </div>
     )
@@ -91,44 +80,32 @@ export function Signup(props){
     )
 }
 
-export function Home(props){
-    return(
-        <div className="center-wrapper">Đây là Home</div>
-    )
-}
-
-export function Questions(props){
-    return(
-        <div className="center-wrapper">Đây là All questions</div>
-    )
-}
-
 export function Badges(props){
     return(
-        <div className="center-wrapper">Đây là Badges</div>
+        <div>Đây là Badges</div>
     )
 }
 
 export function Communities(props){
     return(
-        <div className="center-wrapper">Đây là Communities</div>
+        <div>Đây là Communities</div>
     )
 }
 
 export function Tags(props){
     return(
-        <div className="center-wrapper">Đây là Tags</div>
+        <div>Đây là Tags</div>
     )
 }
 
 export function Users(props){
     return(
-        <div className="center-wrapper">Đây là Users</div>
+        <div>Đây là Users</div>
     )
 }
 
 export function CreateQuestion(props){
     return(
-        <div className="center-wrapper">Đây là tạo câu hỏi</div>
+        <div>Đây là tạo câu hỏi</div>
     )
 }

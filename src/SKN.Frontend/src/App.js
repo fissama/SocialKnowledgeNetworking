@@ -1,5 +1,6 @@
-import {useState,useEffect,useRef,useContext} from 'react';
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import {useState,} from 'react';
+import React from 'react';
+import {BrowserRouter as Router, Link} from "react-router-dom";
 
 import './App.css';
 
@@ -8,10 +9,27 @@ import FooterComp from './Component/FooterComp.js';
 import LeftMenuComp from './Component/LeftMenuComp.js';
 import CenterComp from './Component/CenterComp.js';
 import RightMenuComp from './Component/RightMenuComp.js';
+import Home from './Component/Home/HomeComp.js';
 
+export const DataContext = React.createContext();
+export const UserContext = React.createContext();
 
 function App() {
-  var [status,setStatus] = useState(true); // True là đã đăng nhập
+  var [status,setStatus] = useState(false); // True là đã đăng nhập
+  var [user,setUser] = useState({});
+  const user_info = {
+    id:1,
+    username:'Mountain Nguyen',
+} 
+
+  const DangNhap = (e) =>{
+    e.preventDefault();
+    setStatus(true);
+    setUser(user_info);
+  }
+  const DangXuat = () => {
+    setStatus(false);
+  }
   // xử lý thanh cuộn
   window.onscroll = function() {myFunction()};
   function myFunction() {
@@ -26,11 +44,15 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <HeaderComp status={status} />
+        <UserContext.Provider value={{user:user, setStatus:DangXuat}} >
+          <HeaderComp status={status} />
+        </UserContext.Provider>
         <div className="wrapper">
           <LeftMenuComp />
           <div className="content-wrapper">
-            <CenterComp />
+            <DataContext.Provider value={{status:status,setStatus:DangNhap, user:user}}>
+              <CenterComp />
+            </DataContext.Provider>
             <RightMenuComp status={status}/>
           </div>
         </div>

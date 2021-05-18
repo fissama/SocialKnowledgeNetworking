@@ -57,6 +57,7 @@
     width: 100px;
     height: 35px;
     border: white 2px solid;
+    margin-top: 5px;
 }
 .question .question-content > div button:hover{
     background-color: blue;
@@ -77,7 +78,7 @@
 #home-icon{
     margin: 5px;
 }
-#leave-anwser{
+#leave-answer{
     width: 80%;
     height: 50px;
     margin-left: 10%;
@@ -89,4 +90,20 @@
 }
 #auto-height{
     height: 515px;
+}
+/* like button */
+#like-button{
+    position: relative;
+    top:5px;
+    font-size: 35px;
+    color: blue;
+}
+#dislike-button{
+    position: relative;
+    top:5px;
+    font-size: 35px;
+    color: black;
+}
+.question-content div > i {
+    cursor: pointer;
 }

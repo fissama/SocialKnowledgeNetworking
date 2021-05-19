@@ -3,6 +3,9 @@
     position: relative;
     top:150px;
 }
+.sign a{
+    margin-left: 10px;
+}
 #recommend{
     color:red;
 }

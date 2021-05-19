@@ -1,6 +1,9 @@
-import {useEffect} from 'react';
+
 import {Link} from 'react-router-dom';
 import '../CSS-Layout/Header.css';
+import { useContext } from "react";
+
+import {UserContext} from '../App.js';
 
 export default function HeaderComp(props){
         return(
@@ -13,7 +16,7 @@ export default function HeaderComp(props){
                             <input type="text" placeholder="Type Search Words"/>
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
-                        { props.status ? <Login /> : <NotLogin ChangeEvent={props.ChangeEvent}/>}
+                        { props.status ? <Login setStatus={props.setStatus}/> : <NotLogin ChangeEvent={props.ChangeEvent}/>}
                     </div> 
                 </div>
             </div>
@@ -36,13 +39,16 @@ export function NotLogin(){
 export function Login(props){
     //const url = props.image;
     // Lấy thông tin user
-    const user = {
+    /* const user = {
         id:1,
         username:'Mountain Nguyen',
-    } 
+    }  */
+    const {user} = useContext(UserContext);
+    const {setStatus} = useContext(UserContext);
+
     const EditProfile = ()=>{ 
         var display = document.getElementById("showprofile").style.display;
-        document.getElementById("showprofile").style.display = (display === "none") ? "block" : "none";  
+        document.getElementById("showprofile").style.display = (display === "none") ? "inline-block" : "none";  
    } 
 
     return(
@@ -50,20 +56,14 @@ export function Login(props){
             <img src={process.env.PUBLIC_URL + "./images/default-user-icon.png"} alt="avatar"/>
             <div className="user-name">
                 <span id="span1">Xin chào</span>
-                <span id="span2">{user.username}</span>
-                <div className="dropdown-content" id="showprofile">
-                    <ul>
-                        <li><i class="fas fa-user"></i> User Profile</li>
-                        <li><i class="fas fa-user-edit"></i>Edit Profile</li>
-                        <li><i class="fas fa-user-plus"></i>Referrals</li>
-                        <li><i class="fas fa-envelope"></i>Messages</li>
-                        <li><i class="fas fa-question"></i>Asked Questions</li>
-                        <li><i class="fas fa-graduation-cap"></i>Best Answers</li>
-                        <li><i class="fas fa-hamburger"></i>Points</li>
-                        <li><i class="fas fa-cog"></i>Activity Log</li>
-                        <li><i class="fas fa-sign-out-alt"></i>Logout</li>
-                    </ul>
-                </div>    
+                <span id="span2">{user.username}</span>  
+                <ul className="dropdown-content" id="showprofile">
+                    <li><i class="fas fa-user-edit"></i>Chỉnh sửa thông tin</li>
+                    <Link to = '/create-question'>
+                        <li><i class="fas fa-question"></i>Tạo câu hỏi</li>
+                    </Link>
+                    <li onClick={setStatus}><i class="fas fa-sign-out-alt"></i>Đăng xuất</li>
+                </ul>
             </div>
             <i class="fas fa-caret-down" onClick={()=>EditProfile()}></i>
             <i class="far fa-bell"></i>

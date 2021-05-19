@@ -1,7 +1,8 @@
 
 import "../../CSS-Layout/Home.css";
 
-import {DependentQuestion} from '../Questions/QuestionComp.js';
+import {DependentQuestion,APIQuestion} from '../Questions/QuestionComp.js';
+import {useState} from 'react';
 
 const data = [
     {
@@ -12,6 +13,8 @@ const data = [
         created_at:'May 11, 2021',
         category: 'Thể thao',
         username: 'Mountain',
+        star:10,
+        like:true,
         answers: [
            {
                id:10,
@@ -30,7 +33,6 @@ const data = [
                 username:'Nhan'
            }
         ],
-        views:10
     },
     {
         id:2,
@@ -40,8 +42,9 @@ const data = [
         created_at:'May 11, 2021',
         category: 'Văn Học',
         username: 'David',
+        star:15,
+        like:false,
         answers:[],
-        views:5
     },
     {
         id:3,
@@ -51,6 +54,8 @@ const data = [
         created_at:'May 11, 2021',
         category: 'Toán học',
         username: 'Thiện',
+        star:100,
+        like:true,
         answers:[
             {
                 id:13,
@@ -68,12 +73,26 @@ const data = [
                  create_at:'',
                  username:'Nhan'
             }
-        ],
-        views:100
+        ]
     }
 ]
 
 export default function Home(props){
+    var [content,setContent] = useState(data);
+    const LikeorDiLike = (key) =>{
+        setContent(content.map(
+            (item) => {
+                if(item.id === key)
+                {
+                    return {...item,like:!item.like}
+                }
+                else
+                {
+                    return {...item}
+                }
+            }
+        ));
+    }
     const Click = (e) => {
         // Lấy câu hỏi theo ̀5 yêu cầu
         let list = document.getElementsByClassName("home-list-line");
@@ -92,28 +111,28 @@ export default function Home(props){
         <div className="home">
             <ul className="home-list">
                 <li onClick={Click}>
-                    <span >Gần đây</span>
+                    <span>Gần đây</span>
                     <span className="home-list-line"></span>
                 </li>
                 <li onClick={Click}>
-                    <span  >Nhiều trả lời nhất</span>
+                    <span>Nhiều trả lời nhất</span>
                     <span className="home-list-line"></span>
                 </li>
                 <li onClick={Click}>
-                    <span  >Nhiều lượt xem nhất</span>
+                    <span>Nhiều lượt xem nhất</span>
                     <span className="home-list-line"></span>
                 </li>
                 <li onClick={Click}>
-                    <span  >Nhiều lượt vote nhất</span>
+                    <span>Nhiều lượt vote nhất</span>
                     <span className="home-list-line"></span>
                 </li>
                 <li onClick={Click}>
-                    <span  >Chưa có câu trả lời</span>
+                    <span>Chưa có câu trả lời</span>
                     <span className="home-list-line"></span>
                 </li>
             </ul>
             {
-                data.map(question => <DependentQuestion props={question} key={question.id}/>) 
+                content.map(question => <DependentQuestion props={question} key={question.id} like={LikeorDiLike}/>) 
             }
         </div>
     )

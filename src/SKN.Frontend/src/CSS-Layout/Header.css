@@ -89,7 +89,7 @@ h3{
 .user-name{
     display: flex;
     flex-direction: column;
-    margin-left: 10px;
+    width: 210px;
 }
 .profile-wrapper{
     display: flex;
@@ -103,30 +103,28 @@ h3{
 }
 /*Dropdown menu */
 .profile-wrapper .dropdown-content{
-    position: relative;
-    top:80px;
-    height: auto;
-    display: none;
-}
-.profile-wrapper .dropdown-content i{
-    color: white;
-}
-.profile-wrapper .dropdown-content ul{
     list-style-type: none;
     background-color: white;
-    height: 330px;
+    margin-top: 82px;
+    display: none;
 }
-.profile-wrapper .dropdown-content ul li{
+.profile-wrapper ul li{
     margin-bottom: 10px;
     position: relative;
-    right:10px;
+    right:15px;
 }
-.profile-wrapper .dropdown-content ul li:hover{
+.profile-wrapper ul li:hover{
     color:rgb(255, 0, 55);
     cursor: pointer;
 }
-.profile-wrapper .dropdown-content ul li i{
+.profile-wrapper ul li i{
     color:black;
     margin-right: 5px;
+}
+.profile-wrapper ul li:nth-child(2) i{
+    margin-right: 12px;
+}
+.profile-wrapper ul li:nth-child(3) i{
+    margin-right: 10px;
 }
 

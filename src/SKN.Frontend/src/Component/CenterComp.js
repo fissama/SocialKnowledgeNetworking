@@ -1,21 +1,24 @@
-import {Switch, Route} from "react-router-dom";
+import {Switch, Route, NavLink} from "react-router-dom";
 import "../CSS-Layout/Center-wrapper.css";
 
 import Home from './Home/HomeComp.js';
-import Questions, {DependentQuestion, APIQuestion} from './Questions/QuestionComp.js';
+import Questions, {APIQuestion, APIQuestionSignIn} from './Questions/QuestionComp.js';
+import {DataContext} from '../App.js';
+import { useContext } from "react";
+
 export default function CenterComp(){
+    const {status} = useContext(DataContext);
     return(
         <div className="center-wrapper">
             <Switch>
                 <Route path="/" exact={true} component={Home}/>
                 <Route path="/questions" exact component={Questions}/>
-                <Route path="/questions/:id" component={APIQuestion}/>
+                {status ? <Route path="/questions/:id" component={APIQuestionSignIn}/> : <Route path="/questions/:id" component={APIQuestion}/>}
                 <Route path="/badges"  component={Badges}/>
                 <Route path="/communities"  component={Communities}/>
-                <Route path="/tags"  component={Tags}/>
                 <Route path="/users"  component={Users}/>
                 <Route path="/create-question"  component={CreateQuestion}/>
-                <Route path="/sign-in"  component={Signin}/>
+                {status ? <Route path="/sign-in" component={Home}/> : <Route path="/sign-in"  component={Signin}/> }
                 <Route path="/sign-up"  component={Signup}/>
             </Switch>
         </div>
@@ -23,7 +26,9 @@ export default function CenterComp(){
 }
 
 export function Signin(props){
-    const style = {"width":"90%", "margin":"auto"}
+    const style = {"width":"90%", "margin":"auto"};
+    const {setStatus} = useContext(DataContext);
+
     return(
         <div className="sign">
             <form action="" style={style}>
@@ -43,12 +48,14 @@ export function Signin(props){
                     <input class="form-check-input" type="checkbox"/> Remember me!
                     </label>
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button class="btn btn-primary" onClick={setStatus}>Log-in</button>
+                <NavLink to = '/sign-up'>
+                    <button class="btn btn-primary">Sign-up</button>
+                </NavLink>
                 </form>
         </div>
     )
 }
-
 export function Signup(props){
     const style = {"width":"90%", "margin":"auto"}
     return(
@@ -92,12 +99,6 @@ export function Communities(props){
     )
 }
 
-export function Tags(props){
-    return(
-        <div>Đây là Tags</div>
-    )
-}
-
 export function Users(props){
     return(
         <div>Đây là Users</div>
@@ -105,7 +106,38 @@ export function Users(props){
 }
 
 export function CreateQuestion(props){
+    const style1 = {"width":"90%", "margin":"auto"};
+    const style2 = {"margin-left":"20px"};
+    const style3 = {"margin-bottom":"20px"};
+    
+    const style4 = {"padding":"3px"};
+    const category = ['Thể thao', 'Thời tiết', 'Xã hội', 'Thời trang', 'Hoa hậu'];
     return(
-        <div>Đây là tạo câu hỏi</div>
+        <div>
+            <form action="" style={style1}>
+                <div class="form-group">
+                    <label for="title">Tiêu đề</label><span className="require">*</span>
+                    <input type="text" class="form-control" id="title"/>
+                </div>
+                <div class="form-group">
+                    <label for="content">Nội dung</label><span className="require">*</span>
+                    <textarea type="email" class="form-control" id="content" rows="20"/>
+                </div>
+                <label for="category">Danh mục: </label>
+                <select id="category" name="category" style={style2}>
+                    <option value="Tất cả">Tất cả</option>
+                    {
+                        category.map((item,index) =>
+                            <option value={item} key={index}>{item}</option>
+                        )
+                    }
+                </select>
+                <div style={style3}>
+                    <label for="file">Chọn file:</label>
+                    <input style={style4} type="file" class="form-control" id="file" accept="" multiple />
+                </div>
+                <button type="submit" class="btn btn-primary">Thêm câu hỏi</button>
+                </form>
+        </div>
     )
 }

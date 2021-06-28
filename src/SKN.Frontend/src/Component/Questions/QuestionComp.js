@@ -126,7 +126,7 @@ export function DependentQuestion({props,like}){
                     </h4>
                     <p>{props.content}</p>
                     <div>
-                        <span><i class="fas fa-comment-alt"></i>{props.answers.length} Câu trả lời</span>
+                        <span><i class="fas fa-comment-alt"></i>{props.AnswerCount} Câu trả lời</span>
                         <button>
                             <NavLink to={`/questions/${props.id}`}>Answer</NavLink>
                         </button>

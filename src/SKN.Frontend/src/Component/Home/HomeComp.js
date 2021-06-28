@@ -2,9 +2,9 @@
 import "../../CSS-Layout/Home.css";
 
 import {DependentQuestion,APIQuestion} from '../Questions/QuestionComp.js';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
-const data = [
+/* const data = [
     {
         id:1,
         title:'Đây là câu tiêu đề của câu hỏi 1 nha mọi người',
@@ -75,10 +75,12 @@ const data = [
             }
         ]
     }
-]
+] */
+
+const api_url = process.env.REACT_APP_API;
 
 export default function Home(props){
-    var [content,setContent] = useState(data);
+    var [content,setContent] = useState([]);
     const LikeorDiLike = (key) =>{
         setContent(content.map(
             (item) => {
@@ -107,6 +109,22 @@ export default function Home(props){
             e.target.parentElement.lastChild.className = 'home-list-line home-line-active'; 
         }
     }
+
+    async function getQuestion() {
+        try{
+            const response = await fetch(`${api_url}/question`);
+            const json = await response.json();
+            setContent(json);
+          }
+          catch{
+            console.log("Lỗi URL");
+        }
+    }
+
+    useEffect(() => {
+        getQuestion();
+    }, []);
+
     return(
         <div className="home">
             <ul className="home-list">

@@ -2,12 +2,21 @@
 require "../bootstrap.php";
 use Src\Controller\CategoryController;
 use Src\Controller\UserController;
+use Src\Controller\QuestionController;
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: OPTIONS,GET,POST,PUT,DELETE");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: POST, GET, DELETE, PUT, PATCH, OPTIONS');
+    header('Access-Control-Allow-Headers: token, Content-Type');
+    header('Access-Control-Max-Age: 1728000');
+    header('Content-Length: 0');
+    header('Content-Type: text/plain');
+    die();
+}
+
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
+
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode( '/', $uri );
@@ -28,6 +37,10 @@ switch($uri[1]){
     }
     case 'user': {
         $controller = new UserController($dbConnection, $requestMethod, $Id);
+        break;
+    }
+    case 'question': {
+        $controller = new QuestionController($dbConnection, $requestMethod, $Id);
         break;
     }
     default: {

@@ -11,6 +11,7 @@ CREATE TABLE `User` (
   `username` varchar(255),
   `password` varchar(255),
   `full_name` nvarchar(255),
+  `role` int,
   `email` varchar(255),
   `yearofbirth` int,
   `created_at` timestamp

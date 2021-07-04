@@ -15,7 +15,7 @@ export const DataContext = React.createContext();
 export const UserContext = React.createContext();
 
 function App() {
-  var [status,setStatus] = useState(false); // True là đã đăng nhập
+  var [status,setStatus] = useState(true); // True là đã đăng nhập
   var [user,setUser] = useState({});
   const user_info = {
     id:1,

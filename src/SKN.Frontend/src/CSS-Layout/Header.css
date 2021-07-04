@@ -1,19 +1,35 @@
+
+
+
 .header{
     background-image: url("../image/header.jpg");
 }
+.header-content{
+    align-content: center;
+    width:80%;
+    margin: auto;
+}
 h3{
     color:white;
-    width: 50%;
+}
+.list-group-item{
+    background-color: transparent !important;
 }
 /* Logo */
 .header-wrapper img{
     width: 100px;
     height:100px;
 }
+.header-title{
+    margin-left: 10px;
+    color:white;
+}
 /* Khi chưa log-in */
 /* Thanh search và sign-up, sign-in */
 .header-wrapper{
-    width:80%;
+ 
+    width: 80%;   
+    align-items: center;
     height: auto;
     margin: auto;
     display: flex;
@@ -21,10 +37,8 @@ h3{
     top:20px;
 }
 .header-wrapper-right{
-    display: flex;
     position:absolute;
     right:0px;
-    overflow: hidden;
 
 }
 /* search bar */
@@ -87,9 +101,9 @@ h3{
     margin-right: 15px;
 }
 .user-name{
-    display: flex;
-    flex-direction: column;
-    width: 210px;
+    color: white;
+    width: 200px;
+    align-self: top;
 }
 .profile-wrapper{
     display: flex;
@@ -100,6 +114,10 @@ h3{
 .profile-wrapper > i{
     color:white;
     padding-left: 15px;
+}
+.avatar-image{
+    width: 50px;
+    height: 50px
 }
 /*Dropdown menu */
 .profile-wrapper .dropdown-content{
@@ -127,4 +145,7 @@ h3{
 .profile-wrapper ul li:nth-child(3) i{
     margin-right: 10px;
 }
-
+.dropdown-list{
+    position: relative;
+    align-content: center;
+}

@@ -9,8 +9,8 @@ export default function Header(props){
         return(
             <div className="header" id="center">
                 <div className="header-wrapper">
-                    <img src={process.env.PUBLIC_URL + "./images/Logo.png"} alt="Đây là logo"/>
-                    <h3>Mạng xã hội tri thức trẻ Việt Nam. Nơi trao đổi thông tin và những điều thú vị trong cuộc sống</h3>
+                    <img src={process.env.PUBLIC_URL + "./images/Logo.png"} style={{width:"50px", height:"50px"}} alt="Đây là logo"/>
+                    <h3 style={{margin:"10px", fontWeight:"bold"}}>Mạng xã hội tri thức trẻ Việt Nam</h3>
                     <div className="header-wrapper-right">
                        {/* <form className="search">
                             <input type="text" placeholder="Type Search Words"/>

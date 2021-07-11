@@ -1,5 +1,5 @@
 
-import "../../CSS-Layout/Home.css";
+import "../../app/styles/Home.css";
 
 import {DependentQuestion,APIQuestion} from '../Questions/QuestionComp.js';
 import {useState} from 'react';
@@ -134,6 +134,8 @@ export default function Home(props){
             {
                 content.map(question => <DependentQuestion props={question} key={question.id} like={LikeorDiLike}/>) 
             }
+
+            
         </div>
     )
 }

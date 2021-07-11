@@ -2,14 +2,14 @@ import {useState,} from 'react';
 import React from 'react';
 import {BrowserRouter as Router, Link} from "react-router-dom";
 
-import './App.css';
+import '../styles/App.css';
 
-import HeaderComp from './Component/HeaderComp.js';
-import FooterComp from './Component/FooterComp.js';
-import LeftMenuComp from './Component/LeftMenuComp.js';
-import CenterComp from './Component/CenterComp.js';
-import RightMenuComp from './Component/RightMenuComp.js';
-import Home from './Component/Home/HomeComp.js';
+import Header from './Header.js';
+import FooterComp from './Footer.js';
+import LeftMenuComp from './LeftMenu.js';
+import Center from './Center.js';
+import RightMenuComp from './RightMenu.js';
+import Home from '../../features/Home/HomeComp.js';
 
 export const DataContext = React.createContext();
 export const UserContext = React.createContext();
@@ -45,13 +45,13 @@ function App() {
     <Router>
       <div className="App">
         <UserContext.Provider value={{user:user, setStatus:DangXuat}} >
-          <HeaderComp status={status} />
+          <Header status={status} />
         </UserContext.Provider>
         <div className="wrapper">
           <LeftMenuComp />
           <div className="content-wrapper">
             <DataContext.Provider value={{status:status,setStatus:DangNhap, user:user}}>
-              <CenterComp />
+              <Center />
             </DataContext.Provider>
             <RightMenuComp status={status}/>
           </div>

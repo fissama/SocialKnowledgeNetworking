@@ -1,21 +1,21 @@
 
 import {Link} from 'react-router-dom';
-import '../CSS-Layout/Header.css';
+import '../../app/styles/Header.css';
 import { useContext } from "react";
+import LoginButton from './LoginButton';
+import {UserContext} from './App.js';
 
-import {UserContext} from '../App.js';
-
-export default function HeaderComp(props){
+export default function Header(props){
         return(
             <div className="header" id="center">
                 <div className="header-wrapper">
-                    <img src={process.env.PUBLIC_URL + "./images/Logo.png"} alt="Đây là logo"/>
-                    <h3>Mạng xã hội tri thức trẻ Việt Nam. Nơi trao đổi thông tin và những điều thú vị trong cuộc sống</h3>
+                    <img src={process.env.PUBLIC_URL + "./images/Logo.png"} style={{width:"50px", height:"50px"}} alt="Đây là logo"/>
+                    <h3 style={{margin:"10px", fontWeight:"bold"}}>Mạng xã hội tri thức trẻ Việt Nam</h3>
                     <div className="header-wrapper-right">
-                        <form className="search">
+                       {/* <form className="search">
                             <input type="text" placeholder="Type Search Words"/>
                             <button type="submit"><i class="fa fa-search"></i></button>
-                        </form>
+                        </form> */}
                         { props.status ? <Login setStatus={props.setStatus}/> : <NotLogin ChangeEvent={props.ChangeEvent}/>}
                     </div> 
                 </div>
@@ -26,12 +26,7 @@ export default function HeaderComp(props){
 export function NotLogin(){
     return(
         <div className="sign-in-up">
-            <Link to = '/sign-in'>
-                <button id="sign-in">Sign in</button>
-            </Link>
-            <Link to = '/sign-up'>
-                <button id="sign-up">Sign up</button>
-            </Link>
+           <LoginButton />
         </div>
     )
 }

@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Link} from 'react-router-dom';
 
-import "../CSS-Layout/Right-menu.css";
+import "../../app/styles/Right-menu.css";
 
 export default function RightMenuComp(props){
     const [Infor,setInfor] = useState({

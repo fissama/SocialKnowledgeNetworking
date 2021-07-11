@@ -1,7 +1,7 @@
 import {NavLink} from "react-router-dom";
 
 
-import "../CSS-Layout/Left-menu.css"
+import "../../app/styles/Left-menu.css"
 
 export default function LeftMenuComp(){
     return(

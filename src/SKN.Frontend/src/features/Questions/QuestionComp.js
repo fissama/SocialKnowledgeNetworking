@@ -1,7 +1,7 @@
-import "../../CSS-Layout/Question.css";
+import "../../app/styles/Question.css";
 import {NavLink} from 'react-router-dom';
 
-import {DataContext} from '../../App.js';
+import {DataContext} from '../../app/layout/App.js';
 import { useContext } from "react";
 import {useState} from 'react';
 

@@ -1,12 +1,12 @@
 import {Switch, Route, NavLink} from "react-router-dom";
-import "../CSS-Layout/Center-wrapper.css";
+import "../../app/styles/Center-wrapper.css";
 
-import Home from './Home/HomeComp.js';
-import Questions, {APIQuestion, APIQuestionSignIn} from './Questions/QuestionComp.js';
-import {DataContext} from '../App.js';
+import Home from '../../features/Home/HomeComp.js';
+import Questions, {APIQuestion, APIQuestionSignIn} from '../../features/Questions/QuestionComp.js';
+import {DataContext} from './App.js';
 import { useContext } from "react";
 
-export default function CenterComp(){
+export default function Center(){
     const {status} = useContext(DataContext);
     return(
         <div className="center-wrapper">

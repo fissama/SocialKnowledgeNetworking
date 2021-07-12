@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./app/layout/App";
 import { Auth0Provider } from "@auth0/auth0-react";
 import reportWebVitals from "./reportWebVitals";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 ReactDOM.render(
   <Auth0Provider
     domain = {process.env.REACT_APP_OAUTH_URL}

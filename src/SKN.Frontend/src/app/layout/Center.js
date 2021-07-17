@@ -4,6 +4,7 @@ import "../../app/styles/Center-wrapper.css";
 import Home from '../../features/Home/HomeComp.js';
 import Questions, {APIQuestion, APIQuestionSignIn} from '../../features/Questions/QuestionComp.js';
 import Users from '../../features/User/UserComp.js'
+import Badges from '../../features/Badge/BadgeComp.js'
 import {DataContext} from './App.js';
 import { useContext } from "react";
 
@@ -88,11 +89,6 @@ export function Signup(props){
     )
 }
 
-export function Badges(props){
-    return(
-        <div>Đây là Badges</div>
-    )
-}
 
 export function Communities(props){
     return(

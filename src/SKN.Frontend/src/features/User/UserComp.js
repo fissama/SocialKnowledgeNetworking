@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Button, Container, Col, Row, Nav, Tab, Tabs, Card } from 'react-bootstrap';
-
-import "../../app/styles/Right-menu.css";
-
-
+import "../../app/styles/User.css";
 export default function User(props) {
+    const questioncount = 20;
+    const answercount = 11;
+    const like = 20;
+    const points = 20;
     return (
         <Container>
             <Row style={{ height: "200px" }} >
@@ -33,7 +34,7 @@ export default function User(props) {
                                                 <img src={process.env.PUBLIC_URL + "./images/question.png"}
                                                     style={{ width: "20px", "vertical-align": "middle", height: "20px" }} ></img>
                                                 <span style={{ "vertical-align": "middle", marginLeft: "7px" }}>
-                                                    20 Questions
+                                                    {questioncount} Questions
                                                 </span>
                                             </Card.Body>
                                         </Card>
@@ -44,7 +45,7 @@ export default function User(props) {
                                                 <img src={process.env.PUBLIC_URL + "./images/comment.png"}
                                                     style={{ width: "20px", "vertical-align": "middle", height: "20px" }} ></img>
                                                 <span style={{ "vertical-align": "middle", marginLeft: "7px" }}>
-                                                    20 Answers
+                                                    {answercount} Answers
                                                 </span>
                                             </Card.Body>
                                         </Card>
@@ -55,7 +56,18 @@ export default function User(props) {
                                                 <img src={process.env.PUBLIC_URL + "./images/like.png"}
                                                     style={{ width: "20px", "vertical-align": "middle", height: "20px" }} ></img>
                                                 <span style={{ "vertical-align": "middle", marginLeft: "7px" }}>
-                                                    20 Likes
+                                                    {like} Likes
+                                                </span>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col>
+                                        <Card>
+                                            <Card.Body>
+                                                <img src={process.env.PUBLIC_URL + "./images/points.png"}
+                                                    style={{ width: "20px", "vertical-align": "middle", height: "20px" }} ></img>
+                                                <span style={{ "vertical-align": "middle", marginLeft: "7px" }}>
+                                                    {points} point
                                                 </span>
                                             </Card.Body>
                                         </Card>

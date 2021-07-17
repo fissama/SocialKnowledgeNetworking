@@ -3,6 +3,7 @@ import "../../app/styles/Center-wrapper.css";
 
 import Home from '../../features/Home/HomeComp.js';
 import Questions, {APIQuestion, APIQuestionSignIn} from '../../features/Questions/QuestionComp.js';
+import Users from '../../features/User/UserComp.js'
 import {DataContext} from './App.js';
 import { useContext } from "react";
 
@@ -16,7 +17,7 @@ export default function Center(){
                 {status ? <Route path="/questions/:id" component={APIQuestionSignIn}/> : <Route path="/questions/:id" component={APIQuestion}/>}
                 <Route path="/badges"  component={Badges}/>
                 <Route path="/communities"  component={Communities}/>
-                <Route path="/users"  component={Users}/>
+                <Route path="/user"  component={Users}/>
                 <Route path="/create-question"  component={CreateQuestion}/>
                 {status ? <Route path="/sign-in" component={Home}/> : <Route path="/sign-in"  component={Signin}/> }
                 <Route path="/sign-up"  component={Signup}/>
@@ -99,11 +100,7 @@ export function Communities(props){
     )
 }
 
-export function Users(props){
-    return(
-        <div>Đây là Users</div>
-    )
-}
+
 
 export function CreateQuestion(props){
     const style1 = {"width":"90%", "margin":"auto"};

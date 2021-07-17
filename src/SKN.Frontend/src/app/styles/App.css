@@ -37,6 +37,7 @@
     width: 80%;
     height:auto;
     margin: auto;
+    padding-top: 5.2rem;
 }
 .wrapper::after{
     content:"";
@@ -44,7 +45,7 @@
     clear:both;
 }
 .wrapper .left-menu{
-    width:15%;
+    width:10%;
     height:300px;
     float:left;
     position: fixed;

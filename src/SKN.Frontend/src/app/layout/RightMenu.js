@@ -1,7 +1,10 @@
 import {useState} from 'react';
 import {Link} from 'react-router-dom';
+import ListGroup from 'react-bootstrap/ListGroup';
+import {Container,Col,Row,Navbar} from 'react-bootstrap';
 
 import "../../app/styles/Right-menu.css";
+import LeftMenuComp from './LeftMenu';
 
 export default function RightMenuComp(props){
     const [Infor,setInfor] = useState({
@@ -58,27 +61,35 @@ export function RankingComp({user}){
                 <p>Top user</p>
             </div>
             <hr/>
+            <ListGroup>
             {
                 user.map((item,index) =>
                 <div key={index}>
                     <UserProfileComp user={item}/>
-                    <hr/>
                 </div>    
                 )
             }
+            </ListGroup>
         </div>
     )
 }
 
 export function UserProfileComp({user}){
     return(
-        <div className="UserProfile">
-            <img src={process.env.PUBLIC_URL + "./images/default-user-icon.png"} alt="Đây là multy user"/>
+        <Container className="UserProfile" fuild>
+            <Row>
+                <Col xs="0" style={{width:'50px','margin-left':'-15px', 'margin-right':'10px'}} ><img src={process.env.PUBLIC_URL + "./images/default-user-icon.png"} alt="Đây là multy user"/></Col>
+                <Col>
+                    <Row ><Navbar.Text variant="green" >{user.Name}</Navbar.Text></Row>
+                    <Row>{user.Points} Points</Row>
+                </Col>
+            </Row>
+            {/* <img src={process.env.PUBLIC_URL + "./images/default-user-icon.png"} alt="Đây là multy user"/>
             <div className="Name-point">
                 <span>{user.Name}</span>
                 <p>{user.Points} Points</p>
-            </div>
-        </div>
+            </div> */}
+        </Container>
     )
 }
 

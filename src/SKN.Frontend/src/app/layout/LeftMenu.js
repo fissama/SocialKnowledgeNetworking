@@ -17,9 +17,8 @@ export default function LeftMenuComp(){
                     <li>Danh hiệu</li>
                 </NavLink>
                 <NavLink to = '/communities' activeStyle={{color: "red"}}>
-                    <li>Cộng đồng</li>
                 </NavLink>
-                <NavLink to = '/users' activeStyle={{color: "red"}}>
+                <NavLink to = '/user' activeStyle={{color: "red"}}>
                     <li>Người dùng</li>
                 </NavLink>
             </ul>

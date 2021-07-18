@@ -1,21 +1,21 @@
 import React from "react";
-import { axios } from "axios";
+import axios, { AxiosResponse } from "axios";
 
-axios.defaults.baseURL = `${process.env.API}/api`;
-
-const responseBody = (response) => response.data;
+axios.defaults.baseURL = `http://127.0.0.1:8000`;
 
 const requests = {
-  get: (url) => axios.get(url).then(responseBody),
-  post: (url, body) => axios.post(url, body).then(responseBody),
-  put: (url, body) => axios.put(url, body).then(responseBody),
-  delete: (url) => axios.delete(url).then(responseBody),
+  get: (url) => axios.get(url).then(response => response.data),
+  post: (url, body) => axios.post(url, body).then(response => response.data),
+  put: (url, body) => axios.put(url, body).then(response => response.data),
+  delete: (url) => axios.delete(url).then(response => response.data),
 };
 
 const User = {
-  login: (loginAccount) => requests.post(`/user/login/`, loginAccount),
+  insert: (loginAccount) => requests.post(`/user`, loginAccount),
 };
 
 export const agent = {
-  User
+  User,
 };
+
+export default agent;

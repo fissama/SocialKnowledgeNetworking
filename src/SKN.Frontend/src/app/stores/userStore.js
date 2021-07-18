@@ -13,7 +13,8 @@ export default class UserStore {
 
 	login = async (loginAccount) => {
 		try {
-			const user = await agent.Users.login(loginAccount);
+			console.log("aaaa",loginAccount);
+			const user = await agent.User.insert(loginAccount);
 			this.currentUser = user;
 		} catch (error) {
 			console.log(error);

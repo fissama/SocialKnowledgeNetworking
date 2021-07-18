@@ -1,5 +1,6 @@
 CREATE DATABASE `SocialKnowledgeNetworking` CHARACTER SET utf8 COLLATE utf8_general_ci;
 
+
 use `SocialKnowledgeNetworking`;
 
 create table `setting`(
@@ -13,20 +14,21 @@ CREATE TABLE `User` (
   `full_name` nvarchar(255),
   `email` varchar(255),
   `yearofbirth` int,
+  `role` int,
   `created_at` timestamp
 );
 CREATE TABLE `Badge` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `point` int,
   `date` date,
-  `user_id` int
+  `username` varchar(255)
 );
 CREATE TABLE `Question` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `title` nvarchar(255),
   `content` nvarchar(1000),
   `status` int,
-  `user_id` int,
+  `username` varchar(255),
   `created_at` timestamp
 );
 CREATE TABLE `ReactQuestion` (
@@ -49,7 +51,7 @@ CREATE TABLE `Answer` (
   `status` int,
   `image_link` varchar(255),
   `question_id` int,
-  `user_id` int,
+  `username` varchar(255),
   `created_at` timestamp
 );
 CREATE TABLE `Category` (
@@ -61,18 +63,7 @@ CREATE TABLE `CategoryQuestion` (
   `category_id` int,
   `question_id` int
 );
-ALTER TABLE
-  `Badge`
-ADD
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
-ALTER TABLE
-  `Question`
-ADD
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
-  ALTER TABLE
-  `Answer`
-ADD
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+ALTER TABLE `user` ADD UNIQUE(username);
 ALTER TABLE
   `ReactQuestion`
 ADD

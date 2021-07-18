@@ -63,6 +63,7 @@ CREATE TABLE `CategoryQuestion` (
   `category_id` int,
   `question_id` int
 );
+ALTER TABLE `user` ADD UNIQUE(username);
 ALTER TABLE
   `ReactQuestion`
 ADD

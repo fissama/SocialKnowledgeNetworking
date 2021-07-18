@@ -4,12 +4,24 @@ import "../../app/styles/Header.css";
 import LoginButton from "../common/button/LoginButton";
 import LogoutButton from "../common/button/LogoutButton";
 // import { UserContext } from "./App.js";
+import { useStore } from '../stores/store';
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Header(props) {
+  const { userStore } = useStore();
+  const { login } = userStore;
   const { user, isAuthenticated, isLoading } = useAuth0();
   if(isAuthenticated){
     console.log("aaa",user);
+    const loginAccount = {
+      username: user.email, 
+      password: "default",
+      full_name: user.full_name, 
+      email: user.email,
+      yearofbirth: 1790
+    };
+    login(loginAccount);
+    console.log("===",loginAccount);
   }
   return (
     <div className="header" id="center">

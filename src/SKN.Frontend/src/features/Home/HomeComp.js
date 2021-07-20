@@ -2,101 +2,17 @@
 import "../../app/styles/Home.css";
 
 import {DependentQuestion,APIQuestion} from '../Questions/QuestionComp.js';
-import {useState} from 'react';
+import {useState, useEffect, useContext} from 'react';
 
-const data = [
-    {
-        id:1,
-        title:'Đây là câu tiêu đề của câu hỏi 1 nha mọi người',
-        content:'Đây là nội dung của câu hỏi o home. Mình ghi balalallalalalalala ', 
-        status:'', 
-        created_at:'May 11, 2021',
-        category: 'Thể thao',
-        username: 'Mountain',
-        star:10,
-        like:true,
-        answers: [
-           {
-               id:10,
-               full_content:'balabalbalalasla',
-               status:'',
-               image_link:'',
-               create_at:'',
-               username:'Nhat'
-           },
-           {
-                id:11,
-                full_content:'balabalbalalasla',
-                status:'',
-                image_link:'',
-                create_at:'',
-                username:'Nhan'
-           }
-        ],
-    },
-    {
-        id:2,
-        title:'Đây là câu tiêu đề của câu hỏi 2 nha mọi người',
-        content:'Đây là nội dung của câu hỏi o home. Mình ghi balalallalalalalala i love you 3000 i love you 3000 i love you 3000 i love you 3000 i love you 3000', 
-        status:'', user_id:'1', 
-        created_at:'May 11, 2021',
-        category: 'Văn Học',
-        username: 'David',
-        star:15,
-        like:false,
-        answers:[],
-    },
-    {
-        id:3,
-        title:'Đây là câu tiêu đề của câu hỏi 3 nha mọi người',
-        content:'Đây là nội dung của câu hỏi o home. Mình ghi balalallalalalalala cho nó dài nhassssssssssssssssssssssssssssssssssssssssssssss', 
-        status:'', user_id:'1', 
-        created_at:'May 11, 2021',
-        category: 'Toán học',
-        username: 'Thiện',
-        star:100,
-        like:true,
-        answers:[
-            {
-                id:13,
-                full_content:'balabalbalalasla',
-                status:'',
-                image_link:'',
-                create_at:'',
-                username:'Phi'
-            },
-            {
-                 id:14,
-                 full_content:'balabalbalalasla',
-                 status:'',
-                 image_link:'',
-                 create_at:'',
-                 username:'Nhan'
-            }
-        ]
-    }
-]
+const api_url = process.env.REACT_APP_API;
 
 export default function Home(props){
-    var [content,setContent] = useState(data);
-    const LikeorDiLike = (key) =>{
-        setContent(content.map(
-            (item) => {
-                if(item.id === key)
-                {
-                    return {...item,like:!item.like}
-                }
-                else
-                {
-                    return {...item}
-                }
-            }
-        ));
-    }
+    var [content,setContent] = useState([]);
+
     const Click = (e) => {
         // Lấy câu hỏi theo ̀5 yêu cầu
         let list = document.getElementsByClassName("home-list-line");
-        for(let i=0; i< list.length; i++){
+        for(let i = 0; i < list.length; i++){
             list[i].className = 'home-list-line';
         } 
         if(e.target.localName === 'li')
@@ -106,7 +22,72 @@ export default function Home(props){
         else{
             e.target.parentElement.lastChild.className = 'home-list-line home-line-active'; 
         }
+        var condition = e.target.innerHTML;
+
+        switch(condition) {
+            case "Gần đây":{
+                getRecentQuestion();
+                break;
+            }
+            case "Nhiều trả lời nhất":{
+                getQuestionHavingMostAnswer();
+                break;
+            }
+            case "Chưa có câu trả lời":{
+                findQuestionWithoutAnswer();
+                break;
+            }
+        }
+
     }
+
+    async function getQuestion() {
+        try{
+            const response = await fetch('http://localhost:8000/questions');
+            const json = await response.json();
+            setContent(json);
+          }
+          catch{
+            console.log("Lỗi URL");
+        }
+    }
+
+    async function getRecentQuestion() {
+        try{
+            const response = await fetch(`http://localhost:8000/questions/1`);
+            const json = await response.json();
+            setContent(json);
+          }
+          catch{
+            console.log("Lỗi URL");
+        }
+    }
+
+    async function getQuestionHavingMostAnswer() {
+        try{
+            const response = await fetch(`http://localhost:8000/questions/2`);
+            const json = await response.json();
+            setContent(json);
+          }
+          catch{
+            console.log("Lỗi URL");
+        }
+    }
+
+    async function findQuestionWithoutAnswer() {
+        try{
+            const response = await fetch(`http://localhost:8000/questions/3`);
+            const json = await response.json();
+            setContent(json);
+          }
+          catch{
+            console.log("Lỗi URL");
+        }
+    }
+
+    useEffect(() => {
+        getQuestion();
+    }, []);
     return(
         <div className="home">
             <ul className="home-list">
@@ -119,23 +100,13 @@ export default function Home(props){
                     <span className="home-list-line"></span>
                 </li>
                 <li onClick={Click}>
-                    <span>Nhiều lượt xem nhất</span>
-                    <span className="home-list-line"></span>
-                </li>
-                <li onClick={Click}>
-                    <span>Nhiều lượt vote nhất</span>
-                    <span className="home-list-line"></span>
-                </li>
-                <li onClick={Click}>
                     <span>Chưa có câu trả lời</span>
                     <span className="home-list-line"></span>
                 </li>
             </ul>
             {
-                content.map(question => <DependentQuestion props={question} key={question.id} like={LikeorDiLike}/>) 
+                content.map(question => <DependentQuestion props={question} key={question.id}/>)
             }
-
-            
         </div>
     )
 }

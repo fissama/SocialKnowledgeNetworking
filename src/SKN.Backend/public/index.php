@@ -2,9 +2,11 @@
 require "../bootstrap.php";
 use Src\Controller\CategoryController;
 use Src\Controller\UserController;
+use Src\Controller\QuestionsController;
 use Src\Controller\QuestionController;
 use Src\Controller\AnswerController;
-use Src\Controller\CategoryQuestionController;
+use Src\Controller\RightMenuController;
+use Src\Controller\ReactQuestionController;
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header('Access-Control-Allow-Origin: *');
@@ -19,20 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
-$ret = [
-    'result' => 'OK',
-];
-print json_encode($ret);
 
-$Query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-$Query = explode('&&',$Query);
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode( '/', $uri );
 
 // the user id is, of course, optional and must be a number:
 $Id = null;
 if (isset($uri[2])) {
-    $Id = $uri[2];
+    $Id = (int) $uri[2];
 }
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
@@ -47,6 +43,10 @@ switch($uri[1]){
         $controller = new UserController($dbConnection, $requestMethod, $Id);
         break;
     }
+    case 'questions': {
+        $controller = new QuestionsController($dbConnection, $requestMethod, $Id);
+        break;
+    }
     case 'question': {
         $controller = new QuestionController($dbConnection, $requestMethod, $Id);
         break;
@@ -55,10 +55,15 @@ switch($uri[1]){
         $controller = new AnswerController($dbConnection, $requestMethod, $Id);
         break;
     }
-    case 'categoryquestion': {
-        $controller = new CategoryQuestionController($dbConnection, $requestMethod, $Id);
+    case 'rightmenu': {
+        $controller = new RightMenuController($dbConnection, $requestMethod, $Id);
         break;
     }
+    case 'reactquestion': {
+        $controller = new ReactQuestionController($dbConnection, $requestMethod, $Id);
+        break;
+    }
+
     default: {
         header("HTTP/1.1 404 Not Found");
         exit();

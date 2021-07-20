@@ -24,8 +24,8 @@ export default function Header(props) {
     console.log("===",loginAccount);
   }
   return (
-    <div className="header" id="center">
-      <div className="header-wrapper">
+    <div className="header" id="scrollTop">
+      <div className="header-wrapper" >
         <img
           src={process.env.PUBLIC_URL + "./images/Logo.png"}
           style={{ width: "50px", height: "50px" }}

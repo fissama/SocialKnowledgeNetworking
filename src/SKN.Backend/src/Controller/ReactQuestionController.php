@@ -1,39 +1,32 @@
 <?php
 namespace Src\Controller;
 
-use Src\TableGateways\QuestionGateway;
+use Src\TableGateways\ReactQuestionGateway;
 
-class QuestionController {
+class ReactQuestionController {
 
     private $db;
     private $requestMethod;
-    private $questionId;
+    private $question_id;
 
-    private $questionGateway;
+    private $ReactQuestionGateway;
 
-    public function __construct($db, $requestMethod, $questionId)
+    public function __construct($db, $requestMethod, $question_id)
     {
         $this->db = $db;
         $this->requestMethod = $requestMethod;
-        $this->questionId = $questionId;
-
-        $this->questionGateway = new questionGateway($db);
+        $this->question_id = $question_id;
+        $this->ReactQuestionGateway = new ReactQuestionGateway($db);
     }
 
     public function processRequest()
     {
         switch ($this->requestMethod) {
-            case 'GET':
-                $response = $this->getquestion($this->questionId);
+            case 'GET':     
+                $response = $this->getReactQuestion($this->question_id);
                 break;
-            case 'POST':
-                $response = $this->createquestionFromRequest();
-                break;
-            case 'PUT':
-                $response = $this->updatequestionFromRequest($this->questionId);
-                break;
-            case 'DELETE':
-                $response = $this->deletequestion($this->questionId);
+            case 'PUT':     
+                $response = $this->updateReactQuestionFromRequest($this->question_id);
                 break;
             default:
                 $response = $this->notFoundResponse();
@@ -45,9 +38,9 @@ class QuestionController {
         }
     }
 
-    private function getquestion($id)
+    private function getReactQuestion($question_id)
     {
-        $result = $this->questionGateway->find($id);
+        $result = $this->ReactQuestionGateway->find($question_id);
         if (!$result) {
             return $this->notFoundResponse();
         }
@@ -56,19 +49,20 @@ class QuestionController {
         return $response;
     }
 
-    private function createquestionFromRequest()
+    private function updateReactQuestionFromRequest($id)
     {
         $input = (array) json_decode(file_get_contents('php://input'), TRUE);
-        if (! $this->validatequestion($input)) {
+        if (! $this->validateInput($input)) {
             return $this->unprocessableEntityResponse();
         }
-        $this->questionGateway->insert($input);
-        $response['status_code_header'] = 'HTTP/1.1 201 Created';
+        $this->ReactQuestionGateway->update($id, $input);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = null;
         return $response;
     }
 
-    private function validatequestion($input)
+
+    private function validateInput($input)
     {
         return true;
     }

@@ -5,8 +5,6 @@
 }
 #scroll-up{
     position: sticky;
-    bottom:5px;
-    right:5px;
     display: none;
     color:red;
     font-size: 25px;

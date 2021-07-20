@@ -34,8 +34,7 @@ create table IF NOT EXISTS `setting`(
     `username` varchar(255),
     `question_id` int,
     `star` int COMMENT 'between 0 and 5',
-    `is_like` boolean,
-    `is_dislike` boolean
+    `is_like` boolean
   );
   CREATE TABLE IF NOT EXISTS `Tag` (
     `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -44,7 +43,6 @@ create table IF NOT EXISTS `setting`(
   );
   CREATE TABLE IF NOT EXISTS `Answer` (
     `id` int PRIMARY KEY AUTO_INCREMENT,
-    `shorten_content` nvarchar(255),
     `full_content` nvarchar(1000),
     `status` int,
     `image_link` varchar(255),

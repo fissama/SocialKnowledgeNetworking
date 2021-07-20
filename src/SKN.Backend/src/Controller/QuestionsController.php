@@ -1,9 +1,9 @@
 <?php
 namespace Src\Controller;
 
-use Src\TableGateways\QuestionGateway;
+use Src\TableGateways\QuestionsGateway;
 
-class QuestionController {
+class QuestionsController {
 
     private $db;
     private $requestMethod;
@@ -17,14 +17,28 @@ class QuestionController {
         $this->requestMethod = $requestMethod;
         $this->questionId = $questionId;
 
-        $this->questionGateway = new questionGateway($db);
+        $this->questionGateway = new questionsGateway($db);
     }
 
     public function processRequest()
     {
         switch ($this->requestMethod) {
             case 'GET':
-                $response = $this->getquestion($this->questionId);
+                if ($this->questionId == 1) {
+                    $response = $this->getRecentQuestion();
+                } 
+                else if ($this->questionId == 2) {
+                    $response = $this->getQuestionHavingMostAnswer();
+                }
+                else if ($this->questionId == 3) {
+                    $response = $this->getQuestionWithoutAnswer();
+                }
+                else {
+                    $response = $this->getquestion($this->questionId);
+                }
+                if(!$this->questionId) {
+                    $response = $this->getAllQuestions();
+                }
                 break;
             case 'POST':
                 $response = $this->createquestionFromRequest();
@@ -45,6 +59,14 @@ class QuestionController {
         }
     }
 
+    private function getAllQuestions()
+    {
+        $result = $this->questionGateway->findAll();
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+
     private function getquestion($id)
     {
         $result = $this->questionGateway->find($id);
@@ -56,15 +78,27 @@ class QuestionController {
         return $response;
     }
 
-    private function createquestionFromRequest()
+    private function getRecentQuestion()
     {
-        $input = (array) json_decode(file_get_contents('php://input'), TRUE);
-        if (! $this->validatequestion($input)) {
-            return $this->unprocessableEntityResponse();
-        }
-        $this->questionGateway->insert($input);
-        $response['status_code_header'] = 'HTTP/1.1 201 Created';
-        $response['body'] = null;
+        $result = $this->questionGateway->findRecentQuestion();
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+
+    private function getQuestionHavingMostAnswer()
+    {
+        $result = $this->questionGateway->findQuestionHavingMostAnswer();
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+
+    private function getQuestionWithoutAnswer()
+    {
+        $result = $this->questionGateway->findQuestionWithoutAnswer();
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
         return $response;
     }
 

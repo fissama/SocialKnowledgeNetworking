@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import ListGroup from 'react-bootstrap/ListGroup';
 import {Container,Col,Row,Navbar} from 'react-bootstrap';
@@ -7,17 +7,36 @@ import "../../app/styles/Right-menu.css";
 import LeftMenuComp from './LeftMenu';
 
 export default function RightMenuComp(props){
-    const [Infor,setInfor] = useState({
-        "Questions" : 9, "Answers": 10, "Posts": 0,
-        "Comments": 0, "Best Answers": 0, "Users": 31
-    });
-    const [User,setUser] = useState([
-        {"Name": "NhatMinh", "Points": 23},
-        {"Name": "vvvv", "Points": 22},
-        {"Name": "Mountain", "Points": 20},
-        {"Name": "Nguyenthicuong2005", "Points": 20},
-        {"Name": "Cuong123", "Points": 20}
-    ]);
+    const [Infor,setInfor] = useState([{questions:"", answers:"", users:""}]);
+    const [User,setUser] = useState([]);
+
+    async function getInfor() {
+        try{
+            const response = await fetch('http://localhost:8000/rightmenu/1');
+            const json = await response.json();
+            setInfor(json);
+          }
+          catch{
+            console.log("Lỗi getInfor");
+        }
+    }
+
+    async function getUser() {
+        try{
+            const response = await fetch('http://localhost:8000/rightmenu/2');
+            const json = await response.json();
+            setUser(json);
+          }
+          catch{
+            console.log("Lỗi getUser");
+        }
+    }
+
+    useEffect(() => {
+        getInfor();
+        getUser();
+    }, []);
+
     return(
         <div className="right-menu">
             <TopInformation Infor={Infor}/>
@@ -33,7 +52,6 @@ export default function RightMenuComp(props){
             }
             <hr/>
             <RankingComp user={User}/>
-            <BottomComp />
         </div>
     )
 }
@@ -42,12 +60,9 @@ export function TopInformation({Infor}){
     return(
         <div className="TopInformation">
             <ul>
-                <li>Questions <p>{Infor["Questions"]}</p></li>
-                <li>Answers <p>{Infor["Answers"]}</p></li>
-                <li>Posts <p>{Infor["Posts"]}</p></li>
-                <li>Comments <p>{Infor["Comments"]}</p></li>
-                <li>Best Answer <p>{Infor["Best Answers"]}</p></li>
-                <li>Users <p>{Infor["Users"]}</p></li>
+                <li>Questions <p>{Infor[0].questions}</p></li>
+                <li>Answers <p>{Infor[0].answers}</p></li>
+                <li>Users <p>{Infor[0].users}</p></li>
             </ul>
         </div>
     )
@@ -57,13 +72,13 @@ export function RankingComp({user}){
     return(
         <div className="Ranking">
             <div className="Top-user">
-                <img src={process.env.PUBLIC_URL + "./images/multy-user.png"} alt="Đây là multy user"/>
+                <img src={process.env.PUBLIC_URL + "./images/multy-user.png"} alt="Đây là multi user"/>
                 <p>Top user</p>
             </div>
             <hr/>
             <ListGroup>
             {
-                user.map((item,index) =>
+                user.map((item, index) =>
                 <div key={index}>
                     <UserProfileComp user={item}/>
                 </div>    
@@ -80,22 +95,10 @@ export function UserProfileComp({user}){
             <Row>
                 <Col xs="0" style={{width:'50px','margin-left':'-15px', 'margin-right':'10px'}} ><img src={process.env.PUBLIC_URL + "./images/default-user-icon.png"} alt="Đây là multy user"/></Col>
                 <Col>
-                    <Row ><Navbar.Text variant="green" >{user.Name}</Navbar.Text></Row>
-                    <Row>{user.Points} Points</Row>
+                    <Row ><Navbar.Text variant="green" >{user.full_name}</Navbar.Text></Row>
+                    <Row>{user.final_point} Points</Row>
                 </Col>
             </Row>
-            {/* <img src={process.env.PUBLIC_URL + "./images/default-user-icon.png"} alt="Đây là multy user"/>
-            <div className="Name-point">
-                <span>{user.Name}</span>
-                <p>{user.Points} Points</p>
-            </div> */}
         </Container>
-    )
-}
-
-
-export function BottomComp(props){
-    return(
-        <div className="Bottom">Đây là ở cuối</div>
     )
 }

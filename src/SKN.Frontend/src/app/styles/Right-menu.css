@@ -11,10 +11,10 @@
 }
 .right-menu .TopInformation ul li{
     width:45%;
-    height:33% ;
-    float: left;
+    height:30% ;
     border:2px white solid;
-    margin:5px;
+    margin-left: 80px;
+    margin-bottom: 15px;
     text-align: center;
 }
 .right-menu .TopInformation ul li:nth-child(2n){
@@ -92,17 +92,4 @@
     margin-top: 5px;
     color:red;
 }
-.right-menu .Ranking::after{
-    content: "";
-    width:100%;
-    height: 5px;
-    background-color: white;
-    display: block;
-}
-/* Ở cuối */
-.right-menu .Bottom{
-    height: 200px;
-    border:1px red solid;
-    margin-bottom: 2px;
-  
-}
+

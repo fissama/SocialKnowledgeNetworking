@@ -10,15 +10,16 @@
 .home .home-list li{
     display: flex;
     flex-direction: column;
-    margin-left: 25px;
+    margin-left: 100px;
     cursor: pointer;
+    font-size: 20px;
 }
 .home-list-line{
     content: '';
     width: 100%;
     height: 3px;
     background-color: rgba(0, 0, 0, 0.89);
-    margin-top: 25px;
+    margin-top: 10px;
     display: none;
 }
 .home .home-list li:hover .home-list-line{

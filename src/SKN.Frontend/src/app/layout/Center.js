@@ -101,10 +101,40 @@ export function Communities(props){
 export function CreateQuestion(props){
     const style1 = {"width":"90%", "margin":"auto"};
     const style2 = {"margin-left":"20px"};
-    const style3 = {"margin-bottom":"20px"};
-    
-    const style4 = {"padding":"3px"};
     const category = ['Thể thao', 'Thời tiết', 'Xã hội', 'Thời trang', 'Hoa hậu'];
+
+    async function createQuestion(data) {
+        try{
+            await fetch('http://localhost:8000/question', {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+              'Content-Type': 'application/json'
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+            });
+        }
+          catch{
+            console.log("Lỗi createQuestion");
+        }
+    }
+
+    async function AddQuestion(){
+        var data = {
+            "title"     : "Đây là tiêu đề câu hỏi số 11",
+            "content"   : "Đây là nội dung câu hỏi số 11",
+            "status"    : null,
+            "user_id"   : 1,
+            "created_at": "2021-07-18 00:00:00"
+        }
+        await createQuestion(data);
+    }
+
     return(
         <div>
             <form action="" style={style1}>
@@ -125,11 +155,9 @@ export function CreateQuestion(props){
                         )
                     }
                 </select>
-                <div style={style3}>
-                    <label for="file">Chọn file:</label>
-                    <input style={style4} type="file" class="form-control" id="file" accept="" multiple />
-                </div>
-                <button type="submit" class="btn btn-primary">Thêm câu hỏi</button>
+                <NavLink to = '/questions/11'>
+                    <button style={{display:"block", marginLeft:"350px"}} type="submit" class="btn btn-primary" onClick = {AddQuestion}>Thêm câu hỏi</button>
+                </NavLink>
                 </form>
         </div>
     )

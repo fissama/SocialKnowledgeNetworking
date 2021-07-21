@@ -1,17 +1,36 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import "../../app/styles/Verify.css";
 import { Button, Container, Col, Row, Nav, Tab, Tabs, Card, Form } from 'react-bootstrap';
+const data = [{
+    "id": "1",
+    "title": "Đây là tiêu đề câu hỏi số 4",
+    "content": "Đây là nội dung câu hỏi số 4",
+    "status": "1",
+    "username": "David@gmail.com",
+    "created_at": "2021-05-12 00:00:00"
+  }]
 export default function Verify(props) {
+    var [content,setContent] = useState(data);
+    
+    async function getQuestionNotVerify() {
+        try{
+            const response = await fetch(`http://localhost:8000/questionnotverify/1`);
+            const json = await response.json();
+            setContent(json);
+          }
+          catch{
+            console.log("Lỗi getRaectQuestion");
+        }
+    }
+    useEffect(() => getQuestionNotVerify(), []);
     return (
         <Container>
             <Tabs defaultActiveKey="question" id="noanim-tab-example" className="mb-3">
                 <Tab eventKey="question" title="Câu Hỏi">
-                    <Container>
-                        <Button>Next</Button>
-                        <Button>Previous</Button>
-                    </Container>
-                    <QuestionsVerify></QuestionsVerify>
+                       <Container>
+                        {content.map(item=> <OneQuestionTab item={item}></OneQuestionTab>)}
+                       </Container>
                 </Tab>
                 <Tab eventKey="answer" title="Câu Trả Lời">
                     <AnswersVerify></AnswersVerify>
@@ -23,14 +42,6 @@ export default function Verify(props) {
         </Container>
     )
 };
-export function QuestionsVerify(props) {
-    return (
-        <Container>
-            <OneQuestionTab></OneQuestionTab>
-            <OneQuestionTab></OneQuestionTab>
-        </Container>
-    )
-}
 export function AnswersVerify(props) {
     return (
         <Container>
@@ -45,8 +56,8 @@ export function OneQuestionTab(props) {
                 <Card.Header className={"question-header"}>
                     <Row>
                         <Col className={"question-header-content"}>
-                            <span>Rhea đã đặt một câu hỏi</span>
-                            {/* <span>{props.item.username} đã đặt một câu hỏi</span> */}
+                            <span>{props.item.username} đã đặt một câu hỏi</span>
+                            {/* <span>{props.username} đã đặt một câu hỏi</span> */}
                         </Col>
                         <Col className={"question-header-button"}>
                             <Button variant="danger">
@@ -59,8 +70,8 @@ export function OneQuestionTab(props) {
                     </Row>
                 </Card.Header>
                 <Card.Body className={"question-body"}>
-                    Đây là câu trả lời cho câu hỏi.
-                     {/*props.item.content*/}
+                {props.item.content}
+                     {/*props.content*/}
                 </Card.Body>
             </Card>
         </Row>

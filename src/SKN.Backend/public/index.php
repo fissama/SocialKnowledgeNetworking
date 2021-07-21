@@ -7,6 +7,7 @@ use Src\Controller\QuestionController;
 use Src\Controller\AnswerController;
 use Src\Controller\RightMenuController;
 use Src\Controller\ReactQuestionController;
+use Src\Controller\QuestionLikeController;
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header('Access-Control-Allow-Origin: *');
@@ -63,7 +64,10 @@ switch($uri[1]){
         $controller = new ReactQuestionController($dbConnection, $requestMethod, $Id);
         break;
     }
-
+    case 'questionlike': {
+        $controller = new QuestionLikeController($dbConnection, $requestMethod, $Id);
+        break;
+    }
     default: {
         header("HTTP/1.1 404 Not Found");
         exit();

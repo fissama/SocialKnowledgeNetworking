@@ -31,6 +31,29 @@ class ReactQuestionGateway
         }
     }
 
+    public function insert(array $input)
+    {
+        $statement = "
+            INSERT INTO reactquestion 
+                (username, question_id, star, is_like)
+            VALUES
+                (:username, :question_id, :star, :is_like);
+        ";
+
+        try {
+            $statement = $this->db->prepare($statement);
+            $statement->execute(array(
+                'username' => $input['username'],
+                'question_id' => $input['question_id'],
+                'star' => $input['star'],
+                'is_like' => $input['is_like']
+            ));
+            return $statement->rowCount();
+        } catch (\PDOException $e) {
+            exit($e->getMessage());
+        }
+    }
+
     public function update($id, array $input)
     {
         $statement = "
@@ -50,5 +73,21 @@ class ReactQuestionGateway
         } catch (\PDOException $e) {
             exit($e->getMessage());
         }
+    }
+
+    public function delete($id)
+    {
+        $statement = "
+            DELETE FROM reactquestion
+            WHERE id = :id;
+        ";
+
+        try {
+            $statement = $this->db->prepare($statement);
+            $statement->execute(array('id' => $id));
+            return $statement->rowCount();
+        } catch (\PDOException $e) {
+            exit($e->getMessage());
+        }    
     }
 }

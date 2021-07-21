@@ -7,15 +7,15 @@ class CategoryController {
 
     private $db;
     private $requestMethod;
-    private $categoryId;
+    private $id;
 
     private $categoryGateway;
 
-    public function __construct($db, $requestMethod, $categoryId)
+    public function __construct($db, $requestMethod, $id)
     {
         $this->db = $db;
         $this->requestMethod = $requestMethod;
-        $this->categoryId = $categoryId;
+        $this->id = $id;
 
         $this->categoryGateway = new CategoryGateway($db);
     }
@@ -24,20 +24,14 @@ class CategoryController {
     {
         switch ($this->requestMethod) {
             case 'GET':
-                if ($this->categoryId) {
-                    $response = $this->getCategory($this->categoryId);
+                if ($this->id) {
+                    $response = $this->getCategory($this->id);
                 } else {
                     $response = $this->getAllCategories();
                 };
                 break;
             case 'POST':
                 $response = $this->createCategoryFromRequest();
-                break;
-            case 'PUT':
-                $response = $this->updateCategoryFromRequest($this->categoryId);
-                break;
-            case 'DELETE':
-                $response = $this->deleteCategory($this->categoryId);
                 break;
             default:
                 $response = $this->notFoundResponse();
@@ -80,37 +74,9 @@ class CategoryController {
         return $response;
     }
 
-    private function updateCategoryFromRequest($id)
-    {
-        $result = $this->categoryGateway->find($id);
-        if (! $result) {
-            return $this->notFoundResponse();
-        }
-        $input = (array) json_decode(file_get_contents('php://input'), TRUE);
-        if (! $this->validateCategory($input)) {
-            return $this->unprocessableEntityResponse();
-        }
-        $this->categoryGateway->update($id, $input);
-        $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = null;
-        return $response;
-    }
-
-    private function deleteCategory($id)
-    {
-        $result = $this->categoryGateway->find($id);
-        if (! $result) {
-            return $this->notFoundResponse();
-        }
-        $this->categoryGateway->delete($id);
-        $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = null;
-        return $response;
-    }
-
     private function validateCategory($input)
     {
-        if (! isset($input['category_name'])) {
+        if (! isset($input['id'])) {
             return false;
         }
         return true;

@@ -29,7 +29,7 @@ function App() {
   window.onscroll = function() {myFunction()};
   function myFunction() {
     if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
-      document.getElementById("scroll-up").style.display = "block";
+      document.getElementById("scroll-up").style.display = "inline";
     }
     else{
       document.getElementById("scroll-up").style.display = "none";
@@ -41,7 +41,7 @@ function App() {
       <div className="App">
         <UserContext.Provider value={{user:user, setStatus:DangXuat}} >
           <Header status={status} />
-        <div className="wrapper">
+        <div className="wrapper" id="scrollTop">
           <LeftMenuComp />
           <div className="content-wrapper">
             <DataContext.Provider value={{status:status, setStatus:DangNhap, user:user}}>
@@ -51,7 +51,7 @@ function App() {
           </div>
         </div>
         {
-          status ? <Link to = 'create-question'>
+          status ? <Link to = 'create-question' id = "buttoncreate">
             <i class="fas fa-pen"></i> </Link>  : <span></span>
         }
         <a href="#scrollTop" id="scroll-up"><i class="fas fa-arrow-up"></i></a>  

@@ -16,7 +16,7 @@ class CategoryGateway
     {
         $statement = "
             SELECT 
-                id, category_name
+                category_name
             FROM
                 Category;
         ";
@@ -33,11 +33,11 @@ class CategoryGateway
     public function find($id)
     {
         $statement = "
-            SELECT 
-                *
-            FROM
-                Category
-            WHERE id = ?;
+        select	q.*
+        from	categoryquestion cq
+		        inner join question q
+			    on	q.id			= cq.question_id
+                and	cq.category_id	= ?
         ";
 
         try {

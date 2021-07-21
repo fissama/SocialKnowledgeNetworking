@@ -5,14 +5,14 @@
 }
 #scroll-up{
     position: sticky;
-    display: none;
-    color:red;
-    font-size: 25px;
+    bottom: 5px;
+    left:1880px;
+    font-size: 23px;
 }
-.App > a{
-    position: fixed;
-    bottom:10px;
-    right:35px;
+#buttoncreate{
+    position: sticky;
+    bottom: 5px;
+    left:1850px;
     font-size: 20px;
 }
 .header{
@@ -29,7 +29,10 @@
     text-align: center;
 }
 .footer span{
-    color: rgba(0, 132, 255, 0.747);
+    color: rgba(21, 255, 0, 0.747);
+}
+.footer{
+    background-image: url("http://localhost:3000/images/header.jpg");
 }
 .wrapper{
     width: 80%;

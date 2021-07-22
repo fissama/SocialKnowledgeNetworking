@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import "../../app/styles/Verify.css";
-import { Button, Container, Col, Row, Nav, Tab, Tabs, Card, Form } from 'react-bootstrap';
+import { useStore } from '../../app/stores/store';
+import { Button, Container, Col, Row, Tab, Tabs, Card, Form } from 'react-bootstrap';
 const data = [{
     "id": "1",
     "title": "Đây là tiêu đề câu hỏi số 4",
@@ -10,9 +10,24 @@ const data = [{
     "username": "David@gmail.com",
     "created_at": "2021-05-12 00:00:00"
   }]
+
 export default function Verify(props) {
-    var [content,setContent] = useState(data);
-    
+    const [answerstate,setAS] = useState(false);
+    const [questionstate,setQS] = useState(false);
+    const { verifyStore } = useStore();
+    const {getanswer} = verifyStore;
+    var [answer,setAnswer] = useState([]);
+    async function getAnswerNotVerify(){
+        try
+        {
+            await getanswer(1).then(answer =>  {console.log(answer);console.log(1); setAnswer(answer)});
+        }
+        catch
+        {
+            console.log("Lỗi getListAnswer");
+        }
+    }
+    var [content,setContent] = useState([]); 
     async function getQuestionNotVerify() {
         try{
             const response = await fetch(`http://localhost:8000/questionnotverify/1`);
@@ -23,17 +38,19 @@ export default function Verify(props) {
             console.log("Lỗi getRaectQuestion");
         }
     }
-    useEffect(() => getQuestionNotVerify(), []);
+    useEffect(() => {getQuestionNotVerify();getAnswerNotVerify()}, [questionstate]);
     return (
         <Container>
             <Tabs defaultActiveKey="question" id="noanim-tab-example" className="mb-3">
                 <Tab eventKey="question" title="Câu Hỏi">
                        <Container>
-                        {content.map(item=> <OneQuestionTab item={item}></OneQuestionTab>)}
+                        {content?.map(item=> <OneQuestionTab item={item} setQS={setQS}></OneQuestionTab>)}
                        </Container>
                 </Tab>
                 <Tab eventKey="answer" title="Câu Trả Lời">
-                    <AnswersVerify></AnswersVerify>
+                    <Container>
+                        {answer?.map(item=> <OneAnswerTab item={item}></OneAnswerTab>)}
+                       </Container>
                 </Tab>
                 <Tab eventKey="setting" title={"Cài đặt kiểm duyệt"}>
                     <Form.Check type="checkbox" label="Tự động duyệt câu hỏi và câu trả lời." />
@@ -50,6 +67,18 @@ export function AnswersVerify(props) {
     )
 }
 export function OneQuestionTab(props) {
+    const { verifyStore } = useStore();
+    const {verify} = verifyStore;
+    const UpdateVerify = (id,type,status) => {
+        var verifyInformation = {id:id,type:type,status:status};
+        console.log(verifyInformation);
+        verify(verifyInformation);
+        if(type == 1)
+        {
+            props.setQS(bool => !bool);
+        }
+    }
+
     return (
         <Row md="1">
             <Card className={"question-card"}>
@@ -60,10 +89,10 @@ export function OneQuestionTab(props) {
                             {/* <span>{props.username} đã đặt một câu hỏi</span> */}
                         </Col>
                         <Col className={"question-header-button"}>
-                            <Button variant="danger">
+                            <Button variant="danger" id={props.item.id} onClick={()=>UpdateVerify(props.item.id,1,2)}>
                                 <i class="fa fa-times" aria-hidden="true" />
                             </Button>
-                            <Button variant="primary">
+                            <Button variant="primary" id={props.item.id} onClick={()=>UpdateVerify(props.item.id,1,1)}>
                                 <i class="fa fa-check" />
                             </Button>
                         </Col>
@@ -89,8 +118,8 @@ export function OneAnswerTab(props) {
                             {/* <span>{props.item.answeruser} đã trả lời cho một câu hỏi của {props.item.askuser}</span> */}
                         </Col>
                         <Col className={"answer-header-button"}>
-                            <Button variant="danger"><i class="fa fa-times" aria-hidden="true"></i></Button>
-                            <Button variant="primary"><i class="fa fa-check" /></Button>
+                            <Button variant="danger" ><i class="fa fa-times" aria-hidden="true"></i></Button>
+                            <Button variant="primary" ><i class="fa fa-check" /></Button>
                         </Col>
                     </Row>
                 </Card.Header>

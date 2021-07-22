@@ -95,12 +95,12 @@ insert into category(category_name) values ('Tất cả'), ('Thể thao'), ('Th�
   
   
   
-  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 1', null, 1, 1, 'David2@gmail.com', '2021-05-13');
-  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 2', null, 1, 2, 'David1@gmail.com', '2021-05-14');
-  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 3', null, 1, 3, 'David1@gmail.com', '2021-05-15');
-  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 4', null, 1, 4, 'David2@gmail.com', '2021-05-20');
-  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 5', null, 1, 5, 'David1@gmail.com', '2021-05-21');
-  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 6', null, 1, 2, 'David1@gmail.com', '2021-05-22');
+  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 1',1 , null, 1, 'David2@gmail.com', '2021-05-13');
+  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 2',1 , null, 2, 'David1@gmail.com', '2021-05-14');
+  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 3',1 , null, 3, 'David1@gmail.com', '2021-05-15');
+  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 4',2 , null, 4, 'David2@gmail.com', '2021-05-20');
+  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 5',1 , null, 5, 'David1@gmail.com', '2021-05-21');
+  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 6',1 , null, 2, 'David1@gmail.com', '2021-05-22');
   
 
   insert into reactquestion(username, question_id, star, is_like) values

@@ -15,12 +15,10 @@ class AnswerGateway
     public function find($id)
     {       
         $statement = "
-        select	a.*,
-		        u.username
-        from	answer a
-		        left outer join user u
-			        on u.id	= a.user_id
-        where	a.id	= ?
+        select	*
+        from	answer
+        where	id	   = ?
+        and     status = 1
         ";
 
         try {
@@ -37,9 +35,9 @@ class AnswerGateway
     {
         $statement = "
             INSERT INTO answer 
-                (full_content, status, image_link, question_id, user_id, created_at)
+                (full_content, status, image_link, question_id, username, created_at)
             VALUES
-                (:full_content, :status, :image_link, :question_id, :user_id, :created_at);
+                (:full_content, :status, :image_link, :question_id, :username, :created_at);
         ";
 
         try {
@@ -49,7 +47,7 @@ class AnswerGateway
                 'status'        => $input['status'],
                 'image_link'    => $input['image_link'],
                 'question_id'   => $input['question_id'],
-                'user_id'       => $input['user_id'],
+                'username'      => $input['username'],
                 'created_at'    => $input['created_at'],
             ));
             return $statement->rowCount();

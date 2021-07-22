@@ -1,4 +1,4 @@
-import {useState,} from 'react';
+
 import React from 'react';
 import {BrowserRouter as Router, Link} from "react-router-dom";
 
@@ -9,27 +9,15 @@ import FooterComp from './Footer.js';
 import LeftMenuComp from './LeftMenu.js';
 import Center from './Center.js';
 import RightMenuComp from './RightMenu.js';
-
-export const DataContext = React.createContext();
-export const UserContext = React.createContext();
+import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
-  var [status,setStatus] = useState(true); // True là đã đăng nhập
-  var [user,setUser] = useState({id:1, username:'Mountain'});
-
-  const DangNhap = (e) =>{
-    e.preventDefault();
-    setStatus(true);
-    //setUser(user_info);
-  }
-  const DangXuat = () => {
-    setStatus(false);
-  }
+  const { user, isAuthenticated, isLoading } = useAuth0();
   // xử lý thanh cuộn
   window.onscroll = function() {myFunction()};
   function myFunction() {
     if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
-      document.getElementById("scroll-up").style.display = "block";
+      document.getElementById("scroll-up").style.display = "inline";
     }
     else{
       document.getElementById("scroll-up").style.display = "none";
@@ -39,24 +27,20 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <UserContext.Provider value={{user:user, setStatus:DangXuat}} >
-          <Header status={status} />
-        <div className="wrapper">
+          <Header  />
+        <div className="wrapper" id="scrollTop">
           <LeftMenuComp />
           <div className="content-wrapper">
-            <DataContext.Provider value={{status:status, setStatus:DangNhap, user:user}}>
               <Center />
-            </DataContext.Provider>
-            <RightMenuComp status={status}/>
+            <RightMenuComp />
           </div>
         </div>
         {
-          status ? <Link to = 'create-question'>
+          isAuthenticated ? <Link to = 'create-question' id = "buttoncreate">
             <i class="fas fa-pen"></i> </Link>  : <span></span>
         }
         <a href="#scrollTop" id="scroll-up"><i class="fas fa-arrow-up"></i></a>  
         <FooterComp />
-        </UserContext.Provider>
       </div>
     </Router>
   );

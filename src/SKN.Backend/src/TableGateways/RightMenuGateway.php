@@ -24,11 +24,13 @@ class RightMenuGateway
 	        				0			as answers,
 	        				0			as users
 	        		from	question
+                    where   status  = 1
 	        		UNION
 	        		select	0			as questions,
 	        				count(1)	as answers,
 	        				0			as users
 	        		from	answer
+                    where   status  = 1
 	        		UNION
 	        		select	0			as questions,
 	        				0			as answers,
@@ -49,29 +51,24 @@ class RightMenuGateway
     public function findUser()
     {
         $statement = "
-        select	user_id,
-        		full_name,
+        select	username,
         		sum(question_point) + sum(answer_point) as final_point
         from	(
-        			select	u.id as user_id,
-        					count(q.user_id) * 5	as question_point,
+        			select	username,
+        					count(id) * 5			as question_point,
         					0						as answer_point
-        			from	user u
-        					inner join question q
-        						on q.user_id	= u.id
-        			group by u.id
+        			from	question
+                    where	status = 1
+        			group by username
         			union
-        			select	u.id as user_id,
-        					0					as question_point,
-        					count(a.user_id)	as answer_point
-        			from	user u
-        					inner join answer a
-        						on a.user_id	= u.id
-        			group by u.id
+        			select	username,
+        					0			as question_point,
+        					count(id)	as answer_point
+        			from	answer
+        			where	status = 1
+        			group by username
         		) T
-                inner join user u
-        			on u.id	= T.user_id
-        group by T.user_id
+        group by username
         order by 2 desc
         limit 5
         ";

@@ -11,7 +11,7 @@ export default function LeftMenuComp(){
                     <li>Trang chủ </li>
                 </NavLink>
                 <NavLink to = '/questions' activeStyle={{color: "red"}}>
-                    <li>Tất cả câu hỏi</li>
+                    <li>Danh mục câu hỏi</li>
                 </NavLink>
                 <NavLink to = '/badges' activeStyle={{color: "red"}}>
                     <li>Danh hiệu</li>

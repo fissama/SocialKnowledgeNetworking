@@ -14,8 +14,9 @@ class ReactQuestionController {
     public function __construct($db, $requestMethod, $question_id)
     {
         $this->db = $db;
-        $this->requestMethod = $requestMethod;
-        $this->question_id = $question_id;
+        $this->requestMethod    = $requestMethod;
+        $this->question_id      = $question_id;
+        $this->id            = $question_id;
         $this->ReactQuestionGateway = new ReactQuestionGateway($db);
     }
 
@@ -24,6 +25,12 @@ class ReactQuestionController {
         switch ($this->requestMethod) {
             case 'GET':     
                 $response = $this->getReactQuestion($this->question_id);
+                break;
+            case 'POST':
+                $response = $this->createReactQuestionFromRequest();
+                break;
+            case 'DELETE':
+                $response = $this->deleteReactQuestion($this->id);
                 break;
             case 'PUT':     
                 $response = $this->updateReactQuestionFromRequest($this->question_id);
@@ -49,6 +56,18 @@ class ReactQuestionController {
         return $response;
     }
 
+    private function createReactQuestionFromRequest()
+    {
+        $input = (array) json_decode(file_get_contents('php://input'), TRUE);
+        if (! $this->validateInput($input)) {
+            return $this->unprocessableEntityResponse();
+        }
+        $this->ReactQuestionGateway->insert($input);
+        $response['status_code_header'] = 'HTTP/1.1 201 Created';
+        $response['body'] = null;
+        return $response;
+    }
+
     private function updateReactQuestionFromRequest($id)
     {
         $input = (array) json_decode(file_get_contents('php://input'), TRUE);
@@ -61,6 +80,13 @@ class ReactQuestionController {
         return $response;
     }
 
+    private function deleteReactQuestion($id)
+    {
+        $this->ReactQuestionGateway->delete($id);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = null;
+        return $response;
+    }
 
     private function validateInput($input)
     {

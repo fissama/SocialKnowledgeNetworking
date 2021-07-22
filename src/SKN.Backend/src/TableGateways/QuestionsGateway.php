@@ -17,13 +17,17 @@ class QuestionsGateway
         $statement = "
         select	q.*,
                 count(a.id) as AnswerCount,
-                u.username
+                c.category_name
         from	question q
                 left outer join answer a
-        	        on a.question_id	= q.id
-        		left outer join user u
-        			on u.id				= q.user_id
-        Group by q.id
+        	        on	a.question_id	= q.id
+                    and a.status        = 1
+        		left outer join categoryquestion cq
+        			on	cq.question_id	= q.id
+                left outer join category c
+                    on	c.id			= cq.category_id
+        where	q.status = 1
+        Group by q.id;
         ";
 
         try {
@@ -40,13 +44,17 @@ class QuestionsGateway
         $statement = "
         select	q.*,
                 count(a.id) over(partition by q.id)		as AnswerCount,
-                u.username
+                c.category_name
         from	question q
                 left outer join answer a
                     on a.question_id	= q.id
-                left outer join user u
-                    on u.id				= q.user_id
-        where	q.id = ?";
+                    and a.status        = 1
+                left outer join categoryquestion cq
+                    on	cq.question_id	= q.id
+                left outer join category c
+                    on	c.id			= cq.category_id
+        where	q.id		= ?
+        and		q.status	= 1";
         try {
             $statement = $this->db->prepare($statement);
             $statement->execute(array($id));
@@ -60,16 +68,19 @@ class QuestionsGateway
     public function findRecentQuestion(){
         $statement = "  select	q.*,
                         		count(a.id)	as AnswerCount,
-                                u.username
+                                c.category_name
                         from	question q
                                 left outer join answer a
                                     on a.question_id	= q.id
-                        		left outer join user u
-                        			on u.id				= q.user_id
+                                    and a.status        = 1
+                                left outer join categoryquestion cq
+                                    on	cq.question_id	= q.id
+                                left outer join category c
+                                    on	c.id			= cq.category_id
+                        where	q.status = 1
                         group by q.id
                         order by created_at DESC
                         limit	5";
-
         try {
             $statement = $this->db->query($statement);
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -82,10 +93,17 @@ class QuestionsGateway
     public function findQuestionHavingMostAnswer(){
         $statement = "
         select  q.*,
-		        count(a.id)	as AnswerCount
+		        count(a.id)	as AnswerCount,
+                c.category_name
         from	question q
 		        left outer join answer a
 			        on a.question_id	= q.id
+                    and a.status        = 1
+                left outer join categoryquestion cq
+                    on	cq.question_id	= q.id
+                left outer join category c
+                    on	c.id			= cq.category_id
+        where	q.status = 1            
         group by q.id
         order by AnswerCount DESC
         limit 5 ";
@@ -101,12 +119,17 @@ class QuestionsGateway
     public function findQuestionWithoutAnswer(){
         $statement = "
         select	q.*,
-                u.username
+                count(a.id)	as AnswerCount,
+                c.category_name
         from	question q
                 left outer join answer a
                     on a.question_id	= q.id
-                left outer join user u
-					on u.id				= q.user_id
+                    and a.status        = 1
+                left outer join categoryquestion cq
+                    on	cq.question_id	= q.id
+                left outer join category c
+                    on	c.id			= cq.category_id    
+        where	q.status = 1
         group by q.id
         having	count(a.id) = 0";
 

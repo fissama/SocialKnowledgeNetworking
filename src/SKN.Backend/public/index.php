@@ -1,12 +1,15 @@
 <?php
 require "../bootstrap.php";
 use Src\Controller\CategoryController;
+use Src\Controller\CategoryQuestionController;
 use Src\Controller\UserController;
 use Src\Controller\QuestionsController;
 use Src\Controller\QuestionController;
 use Src\Controller\AnswerController;
 use Src\Controller\RightMenuController;
 use Src\Controller\ReactQuestionController;
+use Src\Controller\QuestionLikeController;
+use Src\Controller\MaxIdQuestionController;
 use Src\Controller\QuestionNotVerifyController;
 use Src\Controller\AnswerNotVerifyController;
 use Src\Controller\VerifyController;
@@ -42,6 +45,10 @@ switch($uri[1]){
         $controller = new CategoryController($dbConnection, $requestMethod, $Id);
         break;
     }
+    case 'categoryquestion': {
+        $controller = new CategoryQuestionController($dbConnection, $requestMethod, $Id);
+        break;
+    }
     case 'user': {
         $controller = new UserController($dbConnection, $requestMethod, $Id);
         break;
@@ -66,6 +73,12 @@ switch($uri[1]){
         $controller = new ReactQuestionController($dbConnection, $requestMethod, $Id);
         break;
     }
+    case 'questionlike': {
+        $controller = new QuestionLikeController($dbConnection, $requestMethod, $Id);
+        break;
+    }
+    case 'maxidquestion': {
+        $controller = new MaxIdQuestionController($dbConnection, $requestMethod);
     case 'questionnotverify':{
         $controller = new QuestionNotVerifyController($dbConnection, $requestMethod, $Id);
         break;

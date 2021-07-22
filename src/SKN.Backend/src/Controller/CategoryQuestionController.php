@@ -96,7 +96,7 @@
             return $response;
         }
 
-        private function createQuestionFromRequest(){
+        private function createCategoryQuestionFromRequest(){
             $input = (array) json_decode(file_get_contents('php://input'), TRUE);
            
             if (!$this->validateCategoryQuestion($input)){

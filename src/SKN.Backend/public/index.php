@@ -10,6 +10,8 @@ use Src\Controller\RightMenuController;
 use Src\Controller\ReactQuestionController;
 use Src\Controller\QuestionLikeController;
 use Src\Controller\MaxIdQuestionController;
+use Src\Controller\QuestionNotVerifyController;
+use Src\TableGateways\QuestionNotVerifyGateway;
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header('Access-Control-Allow-Origin: *');
@@ -76,6 +78,8 @@ switch($uri[1]){
     }
     case 'maxidquestion': {
         $controller = new MaxIdQuestionController($dbConnection, $requestMethod);
+    case 'questionnotverify':{
+        $controller = new QuestionNotVerifyController($dbConnection, $requestMethod, $Id);
         break;
     }
     default: {

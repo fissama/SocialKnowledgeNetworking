@@ -61,28 +61,52 @@ CREATE TABLE `CategoryQuestion` (
   `question_id` int
 );
 
-insert into user(username, password, full_name, email, yearofbirth, created_at) values ('David', '123456', 'David', 'David@gmail.com', 2000, '2021-07-22');
-insert into user(username, password, full_name, email, yearofbirth, created_at) values ('Moutain', '123456', 'David', 'David@gmail.com', 1999, '2021-07-22');
+ALTER TABLE `user` ADD UNIQUE(username);
+ALTER TABLE
+  `ReactQuestion`
+ADD
+  FOREIGN KEY (`question_id`) REFERENCES `Question` (`id`);
+ALTER TABLE
+  `Tag`
+ADD
+  FOREIGN KEY (`question_id`) REFERENCES `Question` (`id`);
+ALTER TABLE
+  `Answer`
+ADD
+  FOREIGN KEY (`question_id`) REFERENCES `Question` (`id`);
+ALTER TABLE
+  `CategoryQuestion`
+ADD
+  FOREIGN KEY (`category_id`) REFERENCES `Category` (`id`);
+ALTER TABLE
+  `CategoryQuestion`
+ADD
+  FOREIGN KEY (`question_id`) REFERENCES `Question` (`id`);
+  
+insert into category(category_name) values ('Tất cả'), ('Thể thao'), ('Thời tiết'), ('Xã hội'), ('Thời trang'), ('Chính trị');
+  insert into user(username, password, full_name, email, yearofbirth, created_at) values ('David', 'David@gmail.com', null, 'David@gmail.com', 2000, null);
+  insert into user(username, password, full_name, email, yearofbirth, created_at) values ('Lorks', 'David2@gmail.com', null, 'David2@gmail.com', 2000, null);
+  insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 4', 'Đây là nội dung câu hỏi số 4', 1, 'David@gmail.com', '2021-05-12');
+  insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 5', 'Đây là nội dung câu hỏi số 5', 1, 'David2@gmail.com', '2021-05-12');
+  insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 6', 'Đây là nội dung câu hỏi số 6', 1, 'David2@gmail.com', '2021-05-12');
+  insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 7', 'Đây là nội dung câu hỏi số 7', 1, 'David@gmail.com', '2021-05-12');
+  insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 9', 'Đây là nội dung câu hỏi số 9', 1, 'David2@gmail.com', '2021-04-12');
+  
+  
+  
+  
+  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 1', null, 1, 1, 'David2@gmail.com', '2021-05-13');
+  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 2', null, 1, 2, 'David1@gmail.com', '2021-05-14');
+  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 3', null, 1, 3, 'David1@gmail.com', '2021-05-15');
+  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 4', null, 1, 4, 'David2@gmail.com', '2021-05-20');
+  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 5', null, 1, 5, 'David1@gmail.com', '2021-05-21');
+  insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 6', null, 1, 2, 'David1@gmail.com', '2021-05-22');
+  
 
-insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 4', 'Đây là nội dung câu hỏi số 4', 1, 'David', '2021-05-12');
-insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 5', 'Đây là nội dung câu hỏi số 5', 1, 'David', '2021-05-11');
-insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 6', 'Đây là nội dung câu hỏi số 6', 1, 'David', '2021-05-12');
-insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 7', 'Đây là nội dung câu hỏi số 7', 1, 'Moutain', '2021-05-12');
-insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 8', 'Đây là nội dung câu hỏi số 8', 1, 'Moutain', '2021-04-12');
-insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 9', 'Đây là nội dung câu hỏi số 9', 1, 'Moutain', '2021-04-12');
-insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 10', 'Đây là nội dung câu hỏi số 10', 1, 'Moutain', '2021-04-10');
-insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 11', 'Đây là nội dung câu hỏi số 11', 0, 'Moutain', '2021-04-12');
+  insert into reactquestion(username, question_id, star, is_like) values
+  ('David2@gmail.com', 1, 0, 1),('David2@gmail.com', 2, 0, 1), ('David2@gmail.com', 3, 0, 1), ('David2@gmail.com', 4, 0, 1), ('David2@gmail.com', 5, 0, 1), ('David@gmail.com', 5, 0, 1);
+  
 
-insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 1', 1, null, 4, 'Moutain', '2021-05-13');
-insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 2', 1, null, 5, 'Moutain', '2021-05-14');
-insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 3', 1, null, 6, 'Moutain', '2021-05-15');
-insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 4', 1, null, 7, 'David', '2021-05-20');
-insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 5', 1, null, 8, 'David', '2021-05-21');
-insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 6', 0, null, 5, 'David', '2021-05-22');
-
-insert into reactquestion(username, question_id, is_like) values	('David', 4, 1),('Moutain', 5, 1), ('David', 6, 1), ('Moutain', 7, 1), ('David', 8, 1), ('Moutain', 9, 1);
-
-insert into category(category_name) values ('Thể thao'), ('Thời tiết'), ('Xã hội'), ('Thời trang'), ('Chính trị');
-
-insert into categoryquestion(category_id, question_id) values (1, 4), (1, 5), (2, 6), (2, 7), (3, 8), (4, 9), (5, 10);
-
+  
+  insert into categoryquestion(category_id, question_id) values (1, 1), (1, 2), (2, 3), (1, 4), (3, 5);
+ 

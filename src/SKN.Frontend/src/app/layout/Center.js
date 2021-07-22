@@ -6,6 +6,9 @@ import Questions, {APIQuestion, APIQuestionSignIn} from '../../features/Question
 import Users from '../../features/User/UserComp.js'
 import Badges from '../../features/Badge/BadgeComp.js'
 import { useAuth0 } from "@auth0/auth0-react";
+import Verify from '../../features/Verify/VerifyComp.js'
+import {DataContext} from './App.js';
+import { useContext } from "react";
 
 export default function Center(){
     const {isAuthenticated } = useAuth0();
@@ -16,6 +19,7 @@ export default function Center(){
                 <Route path="/questions" exact component={Questions}/>
                 {isAuthenticated ? <Route path="/questions/:id" component={APIQuestionSignIn}/> : <Route path="/questions/:id" component={APIQuestion}/>}
                 <Route path="/badges"  component={Badges}/>
+                <Route path="/verify" component={Verify}/>
                 <Route path="/communities"  component={Communities}/>
                 <Route path="/user"  component={Users}/>
                 <Route path="/create-question"  component={CreateQuestion}/>

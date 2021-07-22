@@ -33,11 +33,18 @@ class CategoryGateway
     public function find($id)
     {
         $statement = "
-        select	q.*
+        select	q.*,
+        		count(a.id)	over(partition by q.id)	as AnswerCount,
+                c.category_name
         from	categoryquestion cq
-		        inner join question q
-			    on	q.id			= cq.question_id
-                and	cq.category_id	= ?
+                inner join question q
+        			on	q.id			= cq.question_id
+        		left join category c
+                    on	c.id			= cq.category_id
+                left outer join	answer a
+        			on	a.question_id	= q.id
+                    and	a.status		= 1
+        where	cq.category_id	= ?
         ";
 
         try {
@@ -50,60 +57,4 @@ class CategoryGateway
         }
     }
 
-    public function insert(array $input)
-    {
-        $statement = "
-            INSERT INTO Category 
-                (category_name)
-            VALUES
-                (:category_name);
-        ";
-
-        try {
-            $statement = $this->db->prepare($statement);
-            $statement->execute(array(
-                'category_name' => $input['category_name'],
-            ));
-            return $statement->rowCount();
-        } catch (\PDOException $e) {
-            exit($e->getMessage());
-        }
-    }
-
-    public function update($id, array $input)
-    {
-        $statement = "
-            UPDATE Category
-            SET 
-                category_name = :category_name
-            WHERE id = :id;
-        ";
-
-        try {
-            $statement = $this->db->prepare($statement);
-            $statement->execute(array(
-                'id' => (int) $id,
-                'category_name' => $input['category_name']
-            ));
-            return $statement->rowCount();
-        } catch (\PDOException $e) {
-            exit($e->getMessage());
-        }
-    }
-
-    public function delete($id)
-    {
-        $statement = "
-            DELETE FROM Category
-            WHERE id = :id;
-        ";
-
-        try {
-            $statement = $this->db->prepare($statement);
-            $statement->execute(array('id' => $id));
-            return $statement->rowCount();
-        } catch (\PDOException $e) {
-            exit($e->getMessage());
-        }
-    }
 }

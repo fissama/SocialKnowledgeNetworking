@@ -4,11 +4,12 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import {Container,Col,Row,Navbar} from 'react-bootstrap';
 
 import "../../app/styles/Right-menu.css";
-import LeftMenuComp from './LeftMenu';
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function RightMenuComp(props){
     const [Infor,setInfor] = useState([{questions:"", answers:"", users:""}]);
     const [User,setUser] = useState([]);
+    const { user, isAuthenticated, isLoading } = useAuth0();
 
     async function getInfor() {
         try{
@@ -41,7 +42,7 @@ export default function RightMenuComp(props){
         <div className="right-menu">
             <TopInformation Infor={Infor}/>
             {
-                props.status ?    
+                isAuthenticated ?    
                 <Link to = '/create-question'>
                     <button>Tạo câu hỏi</button>
                 </Link>
@@ -93,9 +94,9 @@ export function UserProfileComp({user}){
     return(
         <Container className="UserProfile" fuild>
             <Row>
-                <Col xs="0" style={{width:'50px','margin-left':'-15px', 'margin-right':'10px'}} ><img src={process.env.PUBLIC_URL + "./images/default-user-icon.png"} alt="Đây là multy user"/></Col>
+                <Col xs="0" style={{width:'50px','marginLeft':'-15px', 'marginRight':'10px'}} ><img src={process.env.PUBLIC_URL + "./images/default-user-icon.png"} alt="Đây là multy user"/></Col>
                 <Col>
-                    <Row ><Navbar.Text variant="green" >{user.full_name}</Navbar.Text></Row>
+                    <Row ><Navbar.Text variant="green" >{user.username}</Navbar.Text></Row>
                     <Row>{user.final_point} Points</Row>
                 </Col>
             </Row>

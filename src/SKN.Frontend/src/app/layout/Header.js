@@ -35,11 +35,6 @@ export default function Header(props) {
           Mạng xã hội tri thức trẻ Việt Nam
         </h3>
         <div className="header-wrapper-right">
-          {/* <form className="search">
-                            <input type="text" placeholder="Type Search Words"/>
-                            <button type="submit"><i class="fa fa-search"></i></button>
-                        </form> */}
-          {/* { props.status ? <Login setStatus={props.setStatus}/> : <NotLogin ChangeEvent={props.ChangeEvent}/>} */}
           {isAuthenticated ? (
             <div>
               <a

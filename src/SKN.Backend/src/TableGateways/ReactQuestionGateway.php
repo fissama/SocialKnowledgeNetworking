@@ -35,9 +35,9 @@ class ReactQuestionGateway
     {
         $statement = "
             INSERT INTO reactquestion 
-                (username, question_id, star, is_like)
+                (username, question_id, is_like)
             VALUES
-                (:username, :question_id, :star, :is_like);
+                (:username, :question_id, :is_like);
         ";
 
         try {
@@ -45,7 +45,6 @@ class ReactQuestionGateway
             $statement->execute(array(
                 'username' => $input['username'],
                 'question_id' => $input['question_id'],
-                'star' => $input['star'],
                 'is_like' => $input['is_like']
             ));
             return $statement->rowCount();

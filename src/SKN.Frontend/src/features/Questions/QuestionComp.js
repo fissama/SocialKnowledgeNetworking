@@ -1,9 +1,7 @@
 import "../../app/styles/Question.css";
 import {NavLink} from 'react-router-dom';
-
-import {DataContext, UserContext} from '../../app/layout/App.js';
-import { useContext } from "react";
 import {useState, useEffect} from 'react';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const api_url = process.env.REACT_APP_API;
 
@@ -11,17 +9,6 @@ export default function Questions(props){
     //Lấy category
     var [category, setCategory] = useState([{category_name: "Tất cả"}]);
     var [content, setContent] = useState([]);
-
-    async function getQuestion() {
-        try{
-            const response = await fetch('http://localhost:8000/questions');
-            const json = await response.json();
-            setContent(json);
-          }
-          catch{
-            console.log("Lỗi getQuestion");
-        }
-    }
 
     async function getQuestionByCategory(id) {
         try{
@@ -31,6 +18,7 @@ export default function Questions(props){
           }
           catch{
             console.log("Lỗi getQuestionByCategory");
+            setContent([]);
         }
     }
 
@@ -52,7 +40,7 @@ export default function Questions(props){
     }
 
     useEffect(() => {
-        getQuestion();
+        getQuestionByCategory(1);
         getCategory();
     }, []);
     // lấy dữ liệu theo category
@@ -82,20 +70,20 @@ export default function Questions(props){
 }
 // Câu hỏi mà không kèm theo câu trả lời
 export function DependentQuestion({props}){
-    const {status} = useContext(DataContext);
-    const {user} = useContext(UserContext);
+    //const {user} = useContext(UserContext);
+    const { user, isAuthenticated, isLoading } = useAuth0();
 
     const [reactquestion, setReactQuestion] = useState([]);
     const [likeNumber, setlikeNumber] = useState([{like_number: 0}]);
     const [condition, setCondition] = useState(true);
 
     const handleLike = async() => {
-        if (reactquestion.find(value => value.username === user.username) === undefined) {
-            let data = {username: user.username, question_id: props.id, star:0, is_like: 1};
+        if (reactquestion.find(value => value.username === user.email) === undefined) {
+            let data = {username: user.email, question_id: props.id, is_like: 1};
             await createLike(data);
         }
         else{
-            let id = reactquestion.find(value => value.username === user.username).id;
+            let id = reactquestion.find(value => value.username === user.email).id;
             await deleteLike(id);
         }
 
@@ -142,7 +130,7 @@ export function DependentQuestion({props}){
             setReactQuestion(json);
           }
           catch{
-            console.log("Lỗi getReactQuestion");
+            console.log("Lỗi getReactQuestion" + props.id);
             setReactQuestion([]);
         }
     }
@@ -164,7 +152,7 @@ export function DependentQuestion({props}){
         await getQuestionLike();
     }, [condition]);
 
-    if(!status){
+    if(!isAuthenticated){
         return(
             <div className="question">
                 <div>
@@ -173,7 +161,7 @@ export function DependentQuestion({props}){
                 <div className="question-content">
                     <span>{props.username}</span>
                     Ngày tạo:<span> {props.created_at}</span>
-                    Danh mục:<span> {props.category}</span>
+                    Danh mục:<span> {props.category_name}</span>
                     <h4>
                         <NavLink to={`/questions/${props.id}`}>{props.title}</NavLink>
                     </h4>
@@ -195,13 +183,13 @@ export function DependentQuestion({props}){
                 <div className="question-content">
                     <span>{props.username}</span>
                     Ngày tạo:<span> {props.created_at}</span>
-                    Danh mục:<span> {props.category}</span>
+                    Danh mục:<span> {props.category_name}</span>
                     <h4>
                         <NavLink to={`/questions/${props.id}`}>{props.title}</NavLink>
                     </h4>
                     <p>{props.content}</p>
                     <div>
-                        <i class="fas fa-thumbs-up" id={reactquestion.find(value => value.username === user.username) === undefined ? "dislike-button" : "like-button"} onClick={()=>handleLike()}></i>
+                        <i class="fas fa-thumbs-up" id={reactquestion.find(value => value.username === user.email) === undefined ? "dislike-button" : "like-button"} onClick={()=>handleLike()}></i>
                         <span><i class="fas fa-comment-alt"></i>{props.AnswerCount} Câu trả lời</span>
                         <span>{likeNumber[0].like_number} Like</span>
                     </div>
@@ -278,11 +266,11 @@ export function APIQuestionSignIn({match}){
     // lấy dữ liệu ứng với question
     // get/question/id
     // thêm câu trả lời thì sẽ làm thay đổi biến update trong useEffect
+    const { user, isAuthenticated, isLoading } = useAuth0();
     var [QuestionBindAnswer, setQuestionBindAnswer] = useState([]);
     var [QuestionCountAnswer, setQuestionCountAnswer] = useState([]);
     //var update="";
-    var [data, setData] = useState({});
-    const {user} = useContext(DataContext);
+    //var [data, setData] = useState({});
 
     async function createAnswer(data) {
         try{
@@ -327,29 +315,32 @@ export function APIQuestionSignIn({match}){
         }
     }
 
-    const LikeorDisLike = () => {
-        
-    }
     const AddAnswer = () => {
+        if(document.getElementById('answer').value == "") {
+            window.alert('Vui lòng nhập đầy đủ thông tin');
+            return;
+        }
         var nowDate = new Date();
         var data = {};
         var contentAnswer   = document.getElementById('answer').value;
         data.full_content   = contentAnswer;
-        data.status         = null;
+        data.status         = 0;
         data.image_link     = "";
         data.question_id    = match.params.id;
-        data.user_id        = 1;
+        data.username       = user.email;
         data.created_at     = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();
-        setData(data);
+        createAnswer(data);
+        //setData(data);
+        window.alert('Bạn đã thêm câu trả lời thành công. Hãy chờ admin duyệt câu trả lời của bạn.');
     }
 
     useEffect(async () => {
-        if(Object.keys(data).length !== 0 ) {
+/*         if(Object.keys(data).length !== 0 ) {
             await createAnswer(data);                     // thêm answer bằng post
-        }
+        } */
         getQuestionBindAnswer(match.params.id);     
         getQuestionCountAnswer(match.params.id);
-    }, [data, match.params.id]);
+    }, [match.params.id]);
 
     useEffect(() => {
         return function cleanup() {
@@ -394,7 +385,7 @@ export function APIQuestionSignIn({match}){
     }
     else{
         return(
-            <div>blabla</div>
+            <div></div>
         )
     }
 }
@@ -409,7 +400,7 @@ export function Answer({answer_id}){
             setAnswer(json);
           }
           catch{
-            console.log("Lỗi URL");
+            console.log("Lỗi getAnswer");
         }
     }
 

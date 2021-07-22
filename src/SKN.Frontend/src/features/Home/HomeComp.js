@@ -48,7 +48,7 @@ export default function Home(props){
             setContent(json);
           }
           catch{
-            console.log("Lỗi URL");
+            console.log("Lỗi getQuestion");
         }
     }
 
@@ -59,7 +59,7 @@ export default function Home(props){
             setContent(json);
           }
           catch{
-            console.log("Lỗi URL");
+            console.log("Lỗi getRecentQuestion");
         }
     }
 
@@ -70,7 +70,7 @@ export default function Home(props){
             setContent(json);
           }
           catch{
-            console.log("Lỗi URL");
+            console.log("Lỗi getQuestionHavingMostAnswer");
         }
     }
 
@@ -81,7 +81,7 @@ export default function Home(props){
             setContent(json);
           }
           catch{
-            console.log("Lỗi URL");
+            console.log("Lỗi findQuestionWithoutAnswer");
         }
     }
 

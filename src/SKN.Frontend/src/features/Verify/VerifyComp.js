@@ -24,6 +24,7 @@ export default function Verify(props) {
         }
         catch
         {
+            setAnswer([]);
             console.log("Lỗi getListAnswer");
         }
     }
@@ -35,10 +36,11 @@ export default function Verify(props) {
             setContent(json);
           }
           catch{
+            setContent([]);
             console.log("Lỗi getRaectQuestion");
         }
     }
-    useEffect(() => {getQuestionNotVerify();getAnswerNotVerify()}, [questionstate]);
+    useEffect(() => {getQuestionNotVerify();getAnswerNotVerify()}, [questionstate,answerstate]);
     return (
         <Container>
             <Tabs defaultActiveKey="question" id="noanim-tab-example" className="mb-3">
@@ -49,7 +51,7 @@ export default function Verify(props) {
                 </Tab>
                 <Tab eventKey="answer" title="Câu Trả Lời">
                     <Container>
-                        {answer?.map(item=> <OneAnswerTab item={item}></OneAnswerTab>)}
+                        {answer?.map(item=> <OneAnswerTab item={item} setAS={setAS}></OneAnswerTab>)}
                        </Container>
                 </Tab>
                 <Tab eventKey="setting" title={"Cài đặt kiểm duyệt"}>
@@ -59,13 +61,7 @@ export default function Verify(props) {
         </Container>
     )
 };
-export function AnswersVerify(props) {
-    return (
-        <Container>
-            <OneAnswerTab></OneAnswerTab>
-        </Container>
-    )
-}
+
 export function OneQuestionTab(props) {
     const { verifyStore } = useStore();
     const {verify} = verifyStore;
@@ -107,6 +103,18 @@ export function OneQuestionTab(props) {
     )
 }
 export function OneAnswerTab(props) {
+    const { verifyStore } = useStore();
+    const {verify} = verifyStore;
+    const UpdateVerify = (id,type,status) => {
+        var verifyInformation = {id:id,type:type,status:status};
+        console.log(verifyInformation);
+        verify(verifyInformation);
+        if(type == 2)
+        {
+            props.setAS(bool => !bool);
+        }
+    }
+    
     return (
         <Row md="1">
             <Card className={"answer-card"}>
@@ -114,18 +122,18 @@ export function OneAnswerTab(props) {
                     <Row>
                         <Col className={"answer-header-content"}>
                             {/* {Đính kèm link câu hỏi ở đây} */}
-                            <span >Rhea đã trả lời cho một câu hỏi của Núi</span>
-                            {/* <span>{props.item.answeruser} đã trả lời cho một câu hỏi của {props.item.askuser}</span> */}
+                            {/* <span >Rhea đã trả lời cho một câu hỏi của Núi</span> */}
+                            <span>{props.item.username} đã trả lời cho một câu hỏi</span>
                         </Col>
                         <Col className={"answer-header-button"}>
-                            <Button variant="danger" ><i class="fa fa-times" aria-hidden="true"></i></Button>
-                            <Button variant="primary" ><i class="fa fa-check" /></Button>
+                            <Button variant="danger" onClick={()=>UpdateVerify(props.item.id,2,2)} ><i class="fa fa-times" aria-hidden="true"></i></Button>
+                            <Button variant="primary" onClick={()=>UpdateVerify(props.item.id,2,1)} ><i class="fa fa-check" /></Button>
                         </Col>
                     </Row>
                 </Card.Header>
                 <Card.Body className={"answer-body"}>
-                    Đây là câu trả lời cho câu hỏi.
-                    {/* {props.item.answercontent} */}
+                    {/* Đây là câu trả lời cho câu hỏi. */}
+                    {props.item.full_content}
                 </Card.Body>
             </Card>
         </Row>

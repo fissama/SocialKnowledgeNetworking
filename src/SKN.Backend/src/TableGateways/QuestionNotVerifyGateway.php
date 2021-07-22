@@ -22,9 +22,9 @@ class QuestionNotVerifyGateway
         LIMIT 5 OFFSET :offset
         ";
         try {
-            $offset = ($id-1)*5;
+            $offset = intval(($id-1)*5,10);
             $statement = $this->db->prepare($statement);
-            $statement->bindParam(':offset', intval($offset, 10),\PDO::PARAM_INT);
+            $statement->bindParam(':offset', $offset,\PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
             return $result;

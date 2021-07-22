@@ -92,7 +92,7 @@ insert into category(category_name) values ('Tất cả'), ('Thể thao'), ('Th�
   insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 7', 'Đây là nội dung câu hỏi số 7', 1, 'David@gmail.com', '2021-05-12');
   insert into question(title, content, status, username, created_at) values ('Đây là tiêu đề câu hỏi số 9', 'Đây là nội dung câu hỏi số 9', 1, 'David2@gmail.com', '2021-04-12');
   
-  
+  insert into socialknowledgenetworking.setting(setting_name,setting_value) values ('auto_audit',0)
   
   
   insert into answer(full_content, status, image_link, question_id, username, created_at) values ('Nội dung câu trả lời 1',1 , null, 1, 'David2@gmail.com', '2021-05-13');

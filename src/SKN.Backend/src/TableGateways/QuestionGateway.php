@@ -16,17 +16,14 @@ class QuestionGateway
     {       
         $statement = "
         select	q.*,
-		        a.shorten_content,
                 a.full_content,
-                a.user_id			as answer_user_id,
+                a.username			as answer_username,
                 a.id                as answer_id,
-                a.created_at        as answer_created_at,
-                u.username
+                a.created_at        as answer_created_at
         from	question q
                 left outer join answer a
 			        on	a.question_id	= q.id
-				left outer join user u
-					on u.id				= q.user_id
+                    and a.status        = 1
                 where	q.id	= ?
                 and		a.id is not null
         ";
@@ -45,9 +42,9 @@ class QuestionGateway
     {
         $statement = "
             INSERT INTO question 
-                (title, content, status, user_id, created_at)
+                (title, content, status, username, created_at)
             VALUES
-                (:title, :content, :status, :user_id, :created_at);
+                (:title, :content, :status, :username, :created_at);
         ";
 
         try {
@@ -56,7 +53,7 @@ class QuestionGateway
                 'title'         => $input['title'],
                 'content'       => $input['content'],
                 'status'        => $input['status'],
-                'user_id'       => $input['user_id'],
+                'username'      => $input['username'],
                 'created_at'    => $input['created_at']
             ));
             return $statement->rowCount();

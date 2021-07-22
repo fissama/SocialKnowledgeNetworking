@@ -1,89 +1,48 @@
 import "../../app/styles/Question.css";
 import {NavLink} from 'react-router-dom';
-
-import {DataContext, UserContext} from '../../app/layout/App.js';
-import { useContext } from "react";
 import {useState, useEffect} from 'react';
-
-const data = [
-    {
-        id:1,
-        title:'Đây là câu tiêu đề của câu hỏi 1 nha mọi người',
-        content:'Đây là nội dung của câu hỏi o home. Mình ghi balalallalalalalala ', 
-        created_at:'May 11, 2021',
-        category: 'Thể thao',
-        username: 'Mountain',
-        star:10,
-        like:true,
-        answers: [
-           {
-               id:10,
-               full_content:'balabalbalalasla',
-               status:'',
-               image_NavLink:'',
-               create_at:'May 6, 2021 at 4:31am',
-               username:'Nhat'
-           },
-           {
-                id:11,
-                full_content:'balabalbalalasla',
-                status:'',
-                image_NavLink:'',
-                create_at:'',
-                username:'Nhan'
-           }
-        ],
-    },
-    {
-        id:2,
-        title:'Đây là câu tiêu đề của câu hỏi 2 nha mọi người',
-        content:'Đây là nội dung của câu hỏi o home. Mình ghi balalallalalalalala cho nó dài nhassssssssssssssssssssssssssssssssssssssssssssss',  
-        created_at:'May 11, 2021',
-        category: 'Toán học',
-        username: 'Thiện',
-        star:5,
-        like:false,
-        answers:[
-            {
-                id:13,
-                full_content:'balabalbalalasla',
-                status:'',
-                image_NavLink:'',
-                create_at:'',
-                username:'Phi'
-            },
-            {
-                 id:14,
-                 full_content:'balabalbalalasla',
-                 status:'',
-                 image_NavLink:'',
-                 create_at:'',
-                 username:'Nhan'
-            }
-        ],
-    }
-]
+import { useAuth0 } from "@auth0/auth0-react";
 
 const api_url = process.env.REACT_APP_API;
 
 export default function Questions(props){
     //Lấy category
-    const category = ['Thể thao', 'Thời tiết', 'Xã hội', 'Thời trang', 'Hoa hậu']
-    var [content,setContent] = useState(data);
-    const LikeorDiLike = (key) =>{
-        setContent(content.map(
-            (item) => {
-                if(item.id === key)
-                {
-                    return {...item,like:!item.like}
-                }
-                else
-                {
-                    return {...item}
-                }
-            }
-        ));
+    var [category, setCategory] = useState([{category_name: "Tất cả"}]);
+    var [content, setContent] = useState([]);
+
+    async function getQuestionByCategory(id) {
+        try{
+            const response = await fetch(`http://localhost:8000/category/${id}`);
+            const json = await response.json();
+            setContent(json);
+          }
+          catch{
+            console.log("Lỗi getQuestionByCategory");
+            setContent([]);
+        }
     }
+
+    async function getCategory() {
+        try{
+            const response = await fetch('http://localhost:8000/category');
+            const json = await response.json();
+            setCategory(json);
+          }
+          catch{
+            console.log("Lỗi getCategory");
+        }
+    }
+
+    function handlegetQuestionByCategory() {
+        var selected = document.getElementById('category').value;
+        getQuestionByCategory(selected);
+        console.log(selected);
+    }
+
+    useEffect(() => {
+        getQuestionByCategory(1);
+        getCategory();
+    }, []);
     // lấy dữ liệu theo category
     return(
         <div>
@@ -95,46 +54,46 @@ export default function Questions(props){
                     <NavLink to={`/questions`}> Câu hỏi </NavLink>
                 </span>
 
-                <select id="cars" name="cars">
-                    <option value="Tất cả">Tất cả</option>
+                <select id="category" name="category" onChange = {handlegetQuestionByCategory}>
                     {
-                        category.map((item,index) =>
-                            <option value={item} key={index}>{item}</option>
+                        category.map((item, index) =>
+                            <option value={index + 1} key={index}>{item.category_name}</option>
                         )
                     }
                 </select>
             </div>
             {
-                content.map(question => <DependentQuestion props={question} key={question.id} like={LikeorDiLike}/>) 
+                content.map(question => <DependentQuestion props={question} key={question.id}/>) 
             }     
         </div>
     )
 }
 // Câu hỏi mà không kèm theo câu trả lời
 export function DependentQuestion({props}){
-    const {status} = useContext(DataContext);
-    const {user} = useContext(UserContext);
+    //const {user} = useContext(UserContext);
+    const { user, isAuthenticated, isLoading } = useAuth0();
 
     const [reactquestion, setReactQuestion] = useState([]);
-    
-    const handleLike = () => {
-        var data = {};
-        var index;
-        if (reactquestion[0].is_like === 1) {
-            data = {is_like: 0}
+    const [likeNumber, setlikeNumber] = useState([{like_number: 0}]);
+    const [condition, setCondition] = useState(true);
+
+    const handleLike = async() => {
+        if (reactquestion.find(value => value.username === user.email) === undefined) {
+            let data = {username: user.email, question_id: props.id, is_like: 1};
+            await createLike(data);
         }
-        else {
-            data = {is_like: 1}
+        else{
+            let id = reactquestion.find(value => value.username === user.email).id;
+            await deleteLike(id);
         }
 
-        updateLike(data);
-        
+        setCondition(pre => !pre);
     }
     
-    async function updateLike(id, data) {
+    async function createLike(data) {
         // Default options are marked with *
-        const response = await fetch(`http://localhost:8000/reactquestion/${id}`, {
-          method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+        const response = await fetch('http://localhost:8000/reactquestion/', {
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, *cors, same-origin
           cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
           credentials: 'same-origin', // include, *same-origin, omit
@@ -146,7 +105,22 @@ export function DependentQuestion({props}){
           referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
           body: JSON.stringify(data) // body data type must match "Content-Type" header
         });
-        return response.json(); // parses JSON response into native JavaScript objects
+    }
+
+    async function deleteLike(id) {
+        // Default options are marked with *
+        const response = await fetch(`http://localhost:8000/reactquestion/${id}`, {
+          method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: 'same-origin', // include, *same-origin, omit
+          headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          redirect: 'follow', // manual, *follow, error
+          referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        });
     }
 
     async function getReactQuestion() {
@@ -156,13 +130,29 @@ export function DependentQuestion({props}){
             setReactQuestion(json);
           }
           catch{
-            console.log("Lỗi getRaectQuestion");
+            console.log("Lỗi getReactQuestion" + props.id);
+            setReactQuestion([]);
+        }
+    }
+
+    async function getQuestionLike() {
+        try{
+            const response = await fetch(`http://localhost:8000/questionlike/${props.id}`);
+            const json = await response.json();
+            setlikeNumber(json);
+          }
+          catch{
+            console.log("Lỗi getQuestionLike");
+            setReactQuestion([]);
         }
     }
   
-    useEffect(() => getReactQuestion(), []);
+    useEffect(async() => {
+        await getReactQuestion();
+        await getQuestionLike();
+    }, [condition]);
 
-    if(!status){
+    if(!isAuthenticated){
         return(
             <div className="question">
                 <div>
@@ -171,13 +161,14 @@ export function DependentQuestion({props}){
                 <div className="question-content">
                     <span>{props.username}</span>
                     Ngày tạo:<span> {props.created_at}</span>
-                    Danh mục:<span> {props.category}</span>
+                    Danh mục:<span> {props.category_name}</span>
                     <h4>
                         <NavLink to={`/questions/${props.id}`}>{props.title}</NavLink>
                     </h4>
                     <p>{props.content}</p>
                     <div>
                         <span><i class="fas fa-comment-alt"></i>{props.AnswerCount} Câu trả lời</span>
+                        <span>{likeNumber[0].like_number} Like</span>
                     </div>
                 </div>
             </div>
@@ -192,15 +183,15 @@ export function DependentQuestion({props}){
                 <div className="question-content">
                     <span>{props.username}</span>
                     Ngày tạo:<span> {props.created_at}</span>
-                    Danh mục:<span> {props.category}</span>
+                    Danh mục:<span> {props.category_name}</span>
                     <h4>
                         <NavLink to={`/questions/${props.id}`}>{props.title}</NavLink>
                     </h4>
                     <p>{props.content}</p>
                     <div>
-                        <i class="fas fa-thumbs-up" id={reactquestion.find(value => value.username === user.username) === undefined ? "dislike-button" : "like-button"} onClick={()=>handleLike(props.id)}></i>
+                        <i class="fas fa-thumbs-up" id={reactquestion.find(value => value.username === user.email) === undefined ? "dislike-button" : "like-button"} onClick={()=>handleLike()}></i>
                         <span><i class="fas fa-comment-alt"></i>{props.AnswerCount} Câu trả lời</span>
-                        <span><i class="fas fa-star"></i>{props.star} Sao</span>
+                        <span>{likeNumber[0].like_number} Like</span>
                     </div>
                 </div>
             </div>
@@ -275,11 +266,11 @@ export function APIQuestionSignIn({match}){
     // lấy dữ liệu ứng với question
     // get/question/id
     // thêm câu trả lời thì sẽ làm thay đổi biến update trong useEffect
+    const { user, isAuthenticated, isLoading } = useAuth0();
     var [QuestionBindAnswer, setQuestionBindAnswer] = useState([]);
     var [QuestionCountAnswer, setQuestionCountAnswer] = useState([]);
     //var update="";
-    var [data, setData] = useState({});
-    const {user} = useContext(DataContext);
+    //var [data, setData] = useState({});
 
     async function createAnswer(data) {
         try{
@@ -324,29 +315,32 @@ export function APIQuestionSignIn({match}){
         }
     }
 
-    const LikeorDisLike = () => {
-        
-    }
     const AddAnswer = () => {
+        if(document.getElementById('answer').value == "") {
+            window.alert('Vui lòng nhập đầy đủ thông tin');
+            return;
+        }
         var nowDate = new Date();
         var data = {};
         var contentAnswer   = document.getElementById('answer').value;
         data.full_content   = contentAnswer;
-        data.status         = null;
+        data.status         = 0;
         data.image_link     = "";
         data.question_id    = match.params.id;
-        data.user_id        = 1;
+        data.username       = user.email;
         data.created_at     = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();
-        setData(data);
+        createAnswer(data);
+        //setData(data);
+        window.alert('Bạn đã thêm câu trả lời thành công. Hãy chờ admin duyệt câu trả lời của bạn.');
     }
 
     useEffect(async () => {
-        if(Object.keys(data).length !== 0 ) {
+/*         if(Object.keys(data).length !== 0 ) {
             await createAnswer(data);                     // thêm answer bằng post
-        }
+        } */
         getQuestionBindAnswer(match.params.id);     
         getQuestionCountAnswer(match.params.id);
-    }, [data, match.params.id]);
+    }, [match.params.id]);
 
     useEffect(() => {
         return function cleanup() {
@@ -391,7 +385,7 @@ export function APIQuestionSignIn({match}){
     }
     else{
         return(
-            <div>blabla</div>
+            <div></div>
         )
     }
 }
@@ -406,7 +400,7 @@ export function Answer({answer_id}){
             setAnswer(json);
           }
           catch{
-            console.log("Lỗi URL");
+            console.log("Lỗi getAnswer");
         }
     }
 

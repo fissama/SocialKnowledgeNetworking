@@ -107,4 +107,5 @@ class UserGateway
             exit($e->getMessage());
         }
     }
+
 }

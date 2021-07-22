@@ -65,7 +65,9 @@ export default function User(props) {
                                         <Card>
                                             <Card.Body>
                                                 <img src={process.env.PUBLIC_URL + "./images/points.png"}
-                                                    style={{ width: "20px", "vertical-align": "middle", height: "20px" }} ></img>
+                                                    style={{ width: "20px", "vertical-align": "middle", height: "20px" }} 
+                                                    alt=""
+                                                    ></img>
                                                 <span style={{ "vertical-align": "middle", marginLeft: "7px" }}>
                                                     {points} point
                                                 </span>

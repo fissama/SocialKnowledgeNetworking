@@ -2,7 +2,7 @@
 
 namespace Src\TableGateways;
 
-class QuestionNotVerifyGateway
+class AnswerNotVerifyGateway
 {
 
     private $db = null;
@@ -17,7 +17,7 @@ class QuestionNotVerifyGateway
     {       
         $statement = "
         select	q.*
-        from	question q
+        from	answer q
         where q.status = 0
         LIMIT 5 OFFSET :offset
         ";

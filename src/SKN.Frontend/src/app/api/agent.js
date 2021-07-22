@@ -13,9 +13,12 @@ const requests = {
 const User = {
   insert: (loginAccount) => requests.post(`/user`, loginAccount),
 };
-
+const Verify = {
+  verify: (VerifyInformation) => requests.put(`/verify`, VerifyInformation),
+  getanswer: (id)=> requests.get('/answernotverify/'+id)
+};
 export const agent = {
-  User,
+  User,Verify
 };
 
 export default agent;

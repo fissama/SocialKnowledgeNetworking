@@ -8,7 +8,8 @@ use Src\Controller\AnswerController;
 use Src\Controller\RightMenuController;
 use Src\Controller\ReactQuestionController;
 use Src\Controller\QuestionNotVerifyController;
-use Src\TableGateways\QuestionNotVerifyGateway;
+use Src\Controller\AnswerNotVerifyController;
+use Src\Controller\VerifyController;
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header('Access-Control-Allow-Origin: *');
@@ -67,6 +68,14 @@ switch($uri[1]){
     }
     case 'questionnotverify':{
         $controller = new QuestionNotVerifyController($dbConnection, $requestMethod, $Id);
+        break;
+    }
+    case 'answernotverify':{
+        $controller = new AnswerNotVerifyController($dbConnection, $requestMethod, $Id);
+        break;
+    }
+    case 'verify':{
+        $controller = new VerifyController($dbConnection, $requestMethod, $Id);
         break;
     }
     default: {

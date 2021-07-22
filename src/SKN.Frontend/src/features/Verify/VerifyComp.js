@@ -10,8 +10,10 @@ const data = [{
     "username": "David@gmail.com",
     "created_at": "2021-05-12 00:00:00"
   }]
-export default function Verify(props) {
 
+export default function Verify(props) {
+    const [answerstate,setAS] = useState(false);
+    const [questionstate,setQS] = useState(false);
     const { verifyStore } = useStore();
     const {getanswer} = verifyStore;
     var [answer,setAnswer] = useState([]);
@@ -25,8 +27,6 @@ export default function Verify(props) {
             console.log("Lỗi getListAnswer");
         }
     }
-
-     
     var [content,setContent] = useState([]); 
     async function getQuestionNotVerify() {
         try{
@@ -38,13 +38,13 @@ export default function Verify(props) {
             console.log("Lỗi getRaectQuestion");
         }
     }
-    useEffect(() => {getQuestionNotVerify();getAnswerNotVerify()}, []);
+    useEffect(() => {getQuestionNotVerify();getAnswerNotVerify()}, [questionstate]);
     return (
         <Container>
             <Tabs defaultActiveKey="question" id="noanim-tab-example" className="mb-3">
                 <Tab eventKey="question" title="Câu Hỏi">
                        <Container>
-                        {content?.map(item=> <OneQuestionTab item={item}></OneQuestionTab>)}
+                        {content?.map(item=> <OneQuestionTab item={item} setQS={setQS}></OneQuestionTab>)}
                        </Container>
                 </Tab>
                 <Tab eventKey="answer" title="Câu Trả Lời">
@@ -73,6 +73,10 @@ export function OneQuestionTab(props) {
         var verifyInformation = {id:id,type:type,status:status};
         console.log(verifyInformation);
         verify(verifyInformation);
+        if(type == 1)
+        {
+            props.setQS(bool => !bool);
+        }
     }
 
     return (

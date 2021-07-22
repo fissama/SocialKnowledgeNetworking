@@ -2,7 +2,7 @@ import agent from "../api/agent";
 
 export default class VerifyStore {
 	//userRegistry = new Map<string, User>();
-	result = 1;
+	result = undefined;
 	verify = async (VerifyInformation) => {
 		try {
 			const result = await agent.Verify.verify(VerifyInformation);
@@ -15,11 +15,9 @@ export default class VerifyStore {
 	getanswer = async (id) => {
 		try {
 			await agent.Verify.getanswer(id).then(result => {
-				console.log(result);
-				console.log(2);
-				return result;
+				this.result = result;
 			});
-
+			return this.result;
 		}
 		catch (error) {
 			console.log(error);

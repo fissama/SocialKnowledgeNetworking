@@ -12,6 +12,7 @@ const requests = {
 
 const User = {
   insert: (loginAccount) => requests.post(`/user`, loginAccount),
+  info: (username) => requests.get(`/user?username=`+username), 
 };
 const Verify = {
   verify: (VerifyInformation) => requests.put(`/verify`, VerifyInformation),

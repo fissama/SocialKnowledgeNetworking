@@ -44,7 +44,6 @@ class UserController {
 
     private function getUser($query)
     {
-        //echo $query[0];
         $username = explode('=',$query[0]);
         $result = $this->userGateway->find($username[1]);
         if (! $result) {

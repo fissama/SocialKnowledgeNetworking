@@ -12,7 +12,6 @@ export default function Header(props) {
   const { login } = userStore;
   const { user, isAuthenticated, isLoading } = useAuth0();
   if(isAuthenticated){
-    console.log("aaa",user);
     const loginAccount = {
       username: user.email, 
       password: "default",
@@ -21,7 +20,6 @@ export default function Header(props) {
       yearofbirth: 1790
     };
     login(loginAccount);
-    console.log("===",loginAccount);
   }
   return (
     <div className="header">

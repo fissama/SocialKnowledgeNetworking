@@ -1,5 +1,6 @@
 <?php
 require "../bootstrap.php";
+
 use Src\Controller\CategoryController;
 use Src\Controller\CategoryQuestionController;
 use Src\Controller\UserController;
@@ -27,9 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
-
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$uri = explode( '/', $uri );
+$uri = explode('/', $uri);
+
+$Query = null;
+if (strpos($_SERVER['REQUEST_URI'], '?') !== false) {
+    $Query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+    $Query = explode('&', $Query);
+}
 
 // the user id is, of course, optional and must be a number:
 $Id = null;
@@ -40,62 +46,62 @@ $requestMethod = $_SERVER["REQUEST_METHOD"];
 
 // all of our endpoints start with valid controller name
 // everything else results in a 404 Not Found
-switch($uri[1]){
+switch ($uri[1]) {
     case 'category': {
-        $controller = new CategoryController($dbConnection, $requestMethod, $Id);
-        break;
-    }
+            $controller = new CategoryController($dbConnection, $requestMethod, $Id);
+            break;
+        }
     case 'categoryquestion': {
-        $controller = new CategoryQuestionController($dbConnection, $requestMethod, $Id);
-        break;
-    }
+            $controller = new CategoryQuestionController($dbConnection, $requestMethod, $Id);
+            break;
+        }
     case 'user': {
-        $controller = new UserController($dbConnection, $requestMethod, $Id);
-        break;
-    }
+            $controller = new UserController($dbConnection, $requestMethod, $Id, $Query);
+            break;
+        }
     case 'questions': {
-        $controller = new QuestionsController($dbConnection, $requestMethod, $Id);
-        break;
-    }
+            $controller = new QuestionsController($dbConnection, $requestMethod, $Id);
+            break;
+        }
     case 'question': {
-        $controller = new QuestionController($dbConnection, $requestMethod, $Id);
-        break;
-    }
+            $controller = new QuestionController($dbConnection, $requestMethod, $Id);
+            break;
+        }
     case 'answer': {
-        $controller = new AnswerController($dbConnection, $requestMethod, $Id);
-        break;
-    }
+            $controller = new AnswerController($dbConnection, $requestMethod, $Id);
+            break;
+        }
     case 'rightmenu': {
-        $controller = new RightMenuController($dbConnection, $requestMethod, $Id);
-        break;
-    }
+            $controller = new RightMenuController($dbConnection, $requestMethod, $Id);
+            break;
+        }
     case 'reactquestion': {
-        $controller = new ReactQuestionController($dbConnection, $requestMethod, $Id);
-        break;
-    }
+            $controller = new ReactQuestionController($dbConnection, $requestMethod, $Id);
+            break;
+        }
     case 'questionlike': {
-        $controller = new QuestionLikeController($dbConnection, $requestMethod, $Id);
-        break;
-    }
+            $controller = new QuestionLikeController($dbConnection, $requestMethod, $Id);
+            break;
+        }
     case 'maxidquestion': {
-        $controller = new MaxIdQuestionController($dbConnection, $requestMethod);
-    }
-    case 'questionnotverify':{
-        $controller = new QuestionNotVerifyController($dbConnection, $requestMethod, $Id);
-        break;
-    }
-    case 'answernotverify':{
-        $controller = new AnswerNotVerifyController($dbConnection, $requestMethod, $Id);
-        break;
-    }
-    case 'verify':{
-        $controller = new VerifyController($dbConnection, $requestMethod, $Id);
-        break;
-    }
+            $controller = new MaxIdQuestionController($dbConnection, $requestMethod);
+        }
+    case 'questionnotverify': {
+            $controller = new QuestionNotVerifyController($dbConnection, $requestMethod, $Id);
+            break;
+        }
+    case 'answernotverify': {
+            $controller = new AnswerNotVerifyController($dbConnection, $requestMethod, $Id);
+            break;
+        }
+    case 'verify': {
+            $controller = new VerifyController($dbConnection, $requestMethod, $Id);
+            break;
+        }
     default: {
-        header("HTTP/1.1 404 Not Found");
-        exit();
-    }
+            header("HTTP/1.1 404 Not Found");
+            exit();
+        }
 }
 // pass the request method and ID to the Controller and process the HTTP request:
 $controller->processRequest();

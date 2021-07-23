@@ -8,14 +8,15 @@ class UserController {
     private $db;
     private $requestMethod;
     private $userId;
-
+    private $userQuery;
     private $userGateway;
 
-    public function __construct($db, $requestMethod, $userId)
+    public function __construct($db, $requestMethod, $userId, $userQuery)
     {
         $this->db = $db;
         $this->requestMethod = $requestMethod;
         $this->userId = $userId;
+        $this->userQuery = $userQuery;
         $this->userGateway = new UserGateway($db);
     }
 
@@ -23,7 +24,7 @@ class UserController {
     {
         switch ($this->requestMethod) {
             case 'GET':
-                $response = $this->loginUser();
+                $response = $this->getUser($this->userQuery);
                 break;
             case 'POST':
                 $response = $this->createUserFromRequest();
@@ -41,13 +42,14 @@ class UserController {
         }
     }
 
-    private function loginUser()
+    private function getUser($query)
     {
-        $input = (array) json_decode(file_get_contents('php://input'), TRUE);
-        if (! $this->validateInput($input)) {
-            return $this->unprocessableEntityResponse();
+        //echo $query[0];
+        $username = explode('=',$query[0]);
+        $result = $this->userGateway->find($username[1]);
+        if (! $result) {
+            return $this->notFoundResponse();
         }
-        $result = $this->userGateway->loginUserGW($input) == null?FALSE:TRUE;
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;

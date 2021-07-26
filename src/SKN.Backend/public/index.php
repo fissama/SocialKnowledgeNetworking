@@ -7,6 +7,7 @@ use Src\Controller\UserController;
 use Src\Controller\QuestionsController;
 use Src\Controller\QuestionController;
 use Src\Controller\AnswerController;
+use Src\Controller\SettingController;
 use Src\Controller\RightMenuController;
 use Src\Controller\ReactQuestionController;
 use Src\Controller\QuestionLikeController;
@@ -57,6 +58,10 @@ switch ($uri[1]) {
         }
     case 'user': {
             $controller = new UserController($dbConnection, $requestMethod, $Id, $Query);
+            break;
+        }
+    case 'setting': {
+            $controller = new SettingController($dbConnection, $requestMethod, $Query);
             break;
         }
     case 'questions': {

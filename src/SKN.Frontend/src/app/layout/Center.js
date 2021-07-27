@@ -18,25 +18,21 @@ export default function Center() {
   const { isAuthenticated, user } = useAuth0();
   const { userStore } = useStore();
   const { getCurrentUser } = userStore;
-  const [isAuthen,setIsAuthen] = useState(false);
+  const [isAuthen, setIsAuthen] = useState(false);
   const [info, setInfo] = useState();
-  useEffect( () => {
+  useEffect(() => {
     const getInfoUser = async () => {
-        if (isAuthenticated) {
-          await setInfo(await getCurrentUser(user.email));
-        }
-      };
-   getInfoUser();
-}, [isAuthen]);
+      if (isAuthenticated) {
+        await setInfo(await getCurrentUser(user.email));
+      }
+    };
+    getInfoUser();
+  }, [isAuthen]);
 
-if((isAuthenticated ^ isAuthen))
-{
-   setIsAuthen(true);
-}
+  if (isAuthenticated ^ isAuthen) {
+    setIsAuthen(true);
+  }
 
-
-
-console.log("=o=", info);
   return (
     <div className="center-wrapper">
       <Switch>
@@ -48,7 +44,12 @@ console.log("=o=", info);
           <Route path="/questions/:id" component={APIQuestion} />
         )}
         <Route path="/badges" component={Badges} />
-        <Route path="/verify" component={Verify} />
+        {isAuthenticated&&user.email=='centaurgon99@gmail.com' ? (
+          <Route path="/verify" component={Verify} />
+        ) : (
+          <div></div>
+        )}
+
         <Route path="/communities" component={Communities} />
         <Route path="/user" component={Users} />
         <Route path="/create-question" component={CreateQuestion} />

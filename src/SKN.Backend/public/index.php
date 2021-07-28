@@ -90,6 +90,7 @@ switch ($uri[1]) {
         }
     case 'maxidquestion': {
             $controller = new MaxIdQuestionController($dbConnection, $requestMethod);
+            break;
         }
     case 'questionnotverify': {
             $controller = new QuestionNotVerifyController($dbConnection, $requestMethod, $Id);

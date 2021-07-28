@@ -13,6 +13,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Verify from "../../features/Verify/VerifyComp.js";
 import { DataContext } from "./App.js";
 import { useContext } from "react";
+import SensitiveWords from "../../features/Questions/blacklist.json";
 
 export default function Center() {
   const { isAuthenticated, user } = useAuth0();
@@ -203,7 +204,10 @@ export function CreateQuestion(props) {
     }
   }
 
-  function AddQuestion() {
+  const { settingStore } = useStore();
+  const { getSetting } = settingStore;
+
+  async function AddQuestion() {
     if (
       document.getElementById("title").value == "" ||
       document.getElementById("content").value == ""
@@ -211,12 +215,40 @@ export function CreateQuestion(props) {
       window.alert("Vui lòng nhập đầy đủ thông tin");
       return;
     }
+    const isAutoVerify =
+    (await getSetting("AutoVerify")).setting_value === "True";
     var nowDate = new Date();
     var data1 = {};
     var data2 = {};
-    data1.title = document.getElementById("title").value;
-    data1.content = document.getElementById("content").value;
-    data1.status = 0;
+    let status1 = 1;
+    const title1 = document.getElementById("title").value;
+    const content1 = document.getElementById("content").value;
+    if (isAutoVerify) 
+    {
+      sensitive: for (var word in SensitiveWords) {
+        if (title1.includes(word) || content1.includes(word)) 
+        {
+          if (SensitiveWords[word].pos === undefined) 
+          {
+            for (var pos in SensitiveWords[word].pos) 
+            {
+              if (!title1.includes(pos) || !content1.includes(pos)) 
+              {
+                status1 = 0;
+                break sensitive;
+              }
+            }
+          }
+          else {
+            status1 = 0;
+            break;
+          }
+        } 
+      }
+    }
+    data1.title = title1;
+    data1.content = content1;
+    data1.status = status1;
     data1.username = user.email;
     data1.created_at =
       nowDate.getFullYear() +

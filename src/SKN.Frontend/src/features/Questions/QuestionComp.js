@@ -359,8 +359,9 @@ export function APIQuestionSignIn({ match }) {
     var nowDate = new Date();
     var data = {};
     var contentAnswer = document.getElementById("answer").value;
-    let status = 1;
+    let status = 0;
     if (isAutoVerify) {
+      status = 1;
       sensitive: for (var word in SensitiveWords) {
         if (contentAnswer.includes(word)) {
           if (SensitiveWords[word].pos === undefined) {

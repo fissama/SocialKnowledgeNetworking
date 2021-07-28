@@ -208,23 +208,23 @@ export function CreateQuestion(props) {
   const { getSetting } = settingStore;
 
   async function AddQuestion() {
+    const title1 = document.getElementById("title").value;
+    const content1 = document.getElementById("content").value;
     if (
-      document.getElementById("title").value == "" ||
-      document.getElementById("content").value == ""
-    ) {
-      window.alert("Vui lòng nhập đầy đủ thông tin");
-      return;
-    }
-    const isAutoVerify =
-    (await getSetting("AutoVerify")).setting_value === "True";
+      title1 === "" || content1 === ""
+      ) {
+        window.alert("Vui lòng nhập đầy đủ thông tin");
+        return;
+      }
+    const isAutoVerify = false;// (await getSetting("AutoVerify")).setting_value === "True";
+    console.log("gn",isAutoVerify);
     var nowDate = new Date();
     var data1 = {};
     var data2 = {};
-    let status1 = 1;
-    const title1 = document.getElementById("title").value;
-    const content1 = document.getElementById("content").value;
+    let status1 = 0;
     if (isAutoVerify) 
     {
+      status1 = 1;
       sensitive: for (var word in SensitiveWords) {
         if (title1.includes(word) || content1.includes(word)) 
         {
@@ -259,8 +259,8 @@ export function CreateQuestion(props) {
 
     data2.category_id = document.getElementById("category").value;
     data2.question_id = maxid[0].MaxId;
-    createQuestion(data1);
-    createCategoryQuestion(data2);
+    await createQuestion(data1);
+    await createCategoryQuestion(data2);
     window.alert(
       "Bạn đã thêm câu hỏi thành công. Hãy chờ admin duyệt câu hỏi của bạn."
     );

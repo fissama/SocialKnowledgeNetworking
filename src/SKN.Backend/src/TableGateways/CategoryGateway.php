@@ -39,6 +39,7 @@ class CategoryGateway
         from	categoryquestion cq
                 inner join question q
         			on	q.id			= cq.question_id
+                    and q.status        = 1
         		left join category c
                     on	c.id			= cq.category_id
                 left outer join	answer a

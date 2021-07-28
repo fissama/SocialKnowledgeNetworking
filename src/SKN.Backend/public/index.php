@@ -15,6 +15,7 @@ use Src\Controller\MaxIdQuestionController;
 use Src\Controller\QuestionNotVerifyController;
 use Src\Controller\AnswerNotVerifyController;
 use Src\Controller\VerifyController;
+use Src\Controller\GetUserInfomationController;
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header('Access-Control-Allow-Origin: *');
@@ -103,6 +104,10 @@ switch ($uri[1]) {
             $controller = new VerifyController($dbConnection, $requestMethod, $Id);
             break;
         }
+    case 'userinfomation': {
+            $controller = new GetUserInfomationController($dbConnection, $requestMethod, $Id);
+            break;
+        }    
     default: {
             header("HTTP/1.1 404 Not Found");
             exit();

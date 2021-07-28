@@ -1,13 +1,54 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import ListGroup from 'react-bootstrap/ListGroup';
-import { Button, Container, Col, Row, Nav, Tab, Tabs, Card } from 'react-bootstrap';
+import {useState, useEffect} from 'react';
+import { NavLink } from 'react-router-dom';
+import { Button, Container, Col, Row, Tab, Tabs, Card } from 'react-bootstrap';
+import { useStore } from "../../app/stores/store";
 import "../../app/styles/User.css";
-export default function User(props) {
+export default function User({match}) {
     const questioncount = 20;
     const answercount = 11;
     const like = 20;
-    const points = 20;
+    const { userInfomationStore } = useStore();
+    const { getUserInfomation} = userInfomationStore;
+    var [questionList, setQuestion] = useState([]);
+    var [answerList, setAnswer] = useState([]);
+    var [points, setPoint] = useState([]);
+    console.log(process.env.PUBLIC_URL);
+    async function getAnswerNotVerify(userid) {
+    try {
+        var Type = { RequestType: 1 };
+      await getUserInfomation(userid,Type).then((question) => {
+        console.log(question);
+        setQuestion(question);
+      });
+    } catch {
+        setQuestion([]);
+      console.log("Lỗi getListQuestion");
+    }
+    try {
+        var Type = { RequestType: 2 };
+        await getUserInfomation(userid,Type).then((answer) => {
+            console.log(answer);
+            setAnswer(answer);
+        });
+      } catch {
+        setAnswer([]);
+        console.log("Lỗi getListAnswer");
+      }
+      try {
+        var Type = { RequestType: 3 };
+        await getUserInfomation(userid,Type).then((pointsc) => {
+            console.log(pointsc);
+            setPoint(pointsc);
+        });
+      } catch {
+        setPoint(null);
+        console.log("Lỗi getPoint");
+      }
+  }
+    useEffect(() => {
+        getAnswerNotVerify(match.params.id);
+    }, [match.params.id]);
+
     return (
         <Container>
             <Row style={{ height: "200px" }} >
@@ -79,16 +120,12 @@ export default function User(props) {
                         </Tab>
                         <Tab eventKey="Questions" title="Questions">
                             <Container>
-                                <Question></Question>
-                                <Question></Question>
-                                <Question></Question>
+                            {questionList?.map((item) => (<Question item={item}></Question>))}
                             </Container>
                         </Tab>
                         <Tab eventKey="Answers" title="Answers">
-                            <Container>
-                                <Answer></Answer>
-                                <Answer></Answer>
-                                <Answer></Answer>
+                        <Container>
+                            {questionList?.map((item) => (<Answer item={item}></Answer>))}
                             </Container>
                         </Tab>
                     </Tabs>
@@ -101,19 +138,19 @@ export function Question(props){
     return(
         <Card>
             <Card.Header>
-                <Link href="">
+                <NavLink to={`/questions/${props.item.id}`}>
                     <h5 style={{ margin: "auto" }}>
-                    Làm thế nào để qua môn ?
+                    {props.item.title}
                     </h5>
-                </Link>
+                </NavLink>
             </Card.Header>
             <Card.Body style={{ padding: "10px" }}>
-                Tôi còn 4 ngày và bí code reactjs ai đó hãy giúp tôi LOL
+                {props.item.content}
             </Card.Body>
             <Card.Body style={{ padding: "5px 0px" }}>
                 <Container>
-                    <span>0 câu trả lời</span>
-                    <span style={{ float: "right" }}>Ngày 19 tháng 5 năm 2019</span>
+                    {/* <span>0 câu trả lời</span> */}
+                    <span style={{ float: "right" }}>{props.item.created_at}</span>
                 </Container>
             </Card.Body>
         </Card>
@@ -123,15 +160,15 @@ export function Answer(props){
     return(
         <Card style={{ marginBottom: "5px" }}>
             <Card.Header>
-                <Link href="">
+                <NavLink to={`/questions/${props.item.question_id}`} >
                     <span style={{ margin: "auto" }}>
-                        Trả lời cho câu hỏi của "Núi"
+                    {props.item.username} đã trả lời cho một câu hỏi
                     </span>
-                </Link>
-                <span style={{ float: "right" }}>Ngày 19 tháng 5 năm 2019</span>
+                </NavLink>
+                <span style={{ float: "right" }}>{props.item.created_at}</span>
             </Card.Header>
             <Card.Body style={{ padding: "10px" }}>
-                Bạn cần làm gì đó
+                {props.item.full_content}
             </Card.Body>
         </Card>
     )

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStore } from "../../app/stores/store";
 import SensitiveWords from "./blacklist.json";
+import { NavItem } from "react-bootstrap";
 const api_url = process.env.REACT_APP_API;
 
 export default function Questions(props) {
@@ -327,6 +328,26 @@ export function APIQuestionSignIn({ match }) {
 
   const { settingStore } = useStore();
   const { getSetting } = settingStore;
+  const [image, setImage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const uploadImage = async (e) => {
+    const files = e.target.files;
+    const data = new FormData();
+    data.append("file", files[0]);
+    data.append("upload_preset", "fissama");
+    setLoading(true);
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/fissama/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+    const file = await res.json();
+    setImage(file.secure_url);
+    setLoading(false);
+  };
 
   const AddAnswer = async () => {
     if (document.getElementById("answer").value == "") {
@@ -339,32 +360,26 @@ export function APIQuestionSignIn({ match }) {
     var data = {};
     var contentAnswer = document.getElementById("answer").value;
     let status = 1;
-    if (isAutoVerify) 
-    {
+    if (isAutoVerify) {
       sensitive: for (var word in SensitiveWords) {
-        if (contentAnswer.includes(word)) 
-        {
-          if (SensitiveWords[word].pos === undefined) 
-          {
-            for (var pos in SensitiveWords[word].pos) 
-            {
-              if (!contentAnswer.includes(pos)) 
-              {
+        if (contentAnswer.includes(word)) {
+          if (SensitiveWords[word].pos === undefined) {
+            for (var pos in SensitiveWords[word].pos) {
+              if (!contentAnswer.includes(pos)) {
                 status = 0;
                 break sensitive;
               }
             }
-          }
-          else {
+          } else {
             status = 0;
             break;
           }
-        } 
+        }
       }
     }
     data.full_content = contentAnswer;
     data.status = status;
-    data.image_link = "";
+    data.image_link = image;
     data.question_id = match.params.id;
     data.username = user.email;
     data.created_at =
@@ -424,8 +439,8 @@ export function APIQuestionSignIn({ match }) {
                 type="file"
                 class="form-control"
                 id="file"
+                onChange={uploadImage}
                 accept=""
-                multiple
               />
             </div>
           </form>
@@ -470,6 +485,13 @@ export function Answer({ answer_id }) {
             <span>{item.username}</span>
             Ngày tạo:<span> {item.created_at}</span>
             <p>{item.full_content}</p>
+            {item.image_link == null ? (
+              <></>
+            ) : item.image_link.length > 10 ? (
+              <img src={item.image_link} alt={"answer"} />
+            ) : (
+              <></>
+            )}
           </div>
         );
       })}

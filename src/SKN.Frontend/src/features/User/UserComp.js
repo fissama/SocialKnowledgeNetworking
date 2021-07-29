@@ -13,10 +13,10 @@ export default function User({match}) {
     var [answerList, setAnswer] = useState([]);
     var [points, setPoint] = useState([]);
     console.log(process.env.PUBLIC_URL);
-    async function getAnswerNotVerify(userid) {
+    async function getAnswerNotVerify(username) {
     try {
         var Type = { RequestType: 1 };
-      await getUserInfomation(userid,Type).then((question) => {
+      await getUserInfomation(username,Type).then((question) => {
         console.log(question);
         setQuestion(question);
       });
@@ -26,7 +26,7 @@ export default function User({match}) {
     }
     try {
         var Type = { RequestType: 2 };
-        await getUserInfomation(userid,Type).then((answer) => {
+        await getUserInfomation(username,Type).then((answer) => {
             console.log(answer);
             setAnswer(answer);
         });
@@ -36,18 +36,21 @@ export default function User({match}) {
       }
       try {
         var Type = { RequestType: 3 };
-        await getUserInfomation(userid,Type).then((pointsc) => {
+        await getUserInfomation(username,Type).then((pointsc) => {
             console.log(pointsc);
+            if(pointsc.length==0)
+            setPoint(0);
+            else
             setPoint(pointsc);
         });
       } catch {
-        setPoint(null);
+        setPoint(0);
         console.log("Lỗi getPoint");
       }
   }
     useEffect(() => {
-        getAnswerNotVerify(match.params.id);
-    }, [match.params.id]);
+        getAnswerNotVerify(match.params.username);
+    }, [match.params.username]);
 
     return (
         <Container>
@@ -75,7 +78,7 @@ export default function User({match}) {
                                                 <img src={process.env.PUBLIC_URL + "./images/question.png"}
                                                     style={{ width: "20px", "vertical-align": "middle", height: "20px" }} ></img>
                                                 <span style={{ "vertical-align": "middle", marginLeft: "7px" }}>
-                                                    {questioncount} Questions
+                                                    {questionList.length} Questions
                                                 </span>
                                             </Card.Body>
                                         </Card>
@@ -86,18 +89,7 @@ export default function User({match}) {
                                                 <img src={process.env.PUBLIC_URL + "./images/comment.png"}
                                                     style={{ width: "20px", "vertical-align": "middle", height: "20px" }} ></img>
                                                 <span style={{ "vertical-align": "middle", marginLeft: "7px" }}>
-                                                    {answercount} Answers
-                                                </span>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                    <Col>
-                                        <Card>
-                                            <Card.Body>
-                                                <img src={process.env.PUBLIC_URL + "./images/like.png"}
-                                                    style={{ width: "20px", "vertical-align": "middle", height: "20px" }} ></img>
-                                                <span style={{ "vertical-align": "middle", marginLeft: "7px" }}>
-                                                    {like} Likes
+                                                    {answerList.length} Answers
                                                 </span>
                                             </Card.Body>
                                         </Card>
@@ -139,19 +131,14 @@ export function Question(props){
         <Card>
             <Card.Header>
                 <NavLink to={`/questions/${props.item.id}`}>
-                    <h5 style={{ margin: "auto" }}>
+                    <span style={{ margin: "auto" }}>
                     {props.item.title}
-                    </h5>
+                    </span>
                 </NavLink>
+                <span style={{ float: "right" }}>{props.item.created_at}</span>
             </Card.Header>
             <Card.Body style={{ padding: "10px" }}>
                 {props.item.content}
-            </Card.Body>
-            <Card.Body style={{ padding: "5px 0px" }}>
-                <Container>
-                    {/* <span>0 câu trả lời</span> */}
-                    <span style={{ float: "right" }}>{props.item.created_at}</span>
-                </Container>
             </Card.Body>
         </Card>
     )
@@ -168,7 +155,7 @@ export function Answer(props){
                 <span style={{ float: "right" }}>{props.item.created_at}</span>
             </Card.Header>
             <Card.Body style={{ padding: "10px" }}>
-                {props.item.full_content}
+                {props.item.content}
             </Card.Body>
         </Card>
     )

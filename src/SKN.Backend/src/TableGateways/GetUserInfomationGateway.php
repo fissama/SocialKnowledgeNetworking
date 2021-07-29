@@ -44,7 +44,7 @@ class GetUserInfomationGateway
         ";
 
         try {
-            $convert = strval($username['username']);
+            $convert = strval($username);
             $statement = $this->db->prepare($statement);
             $statement->execute(array('username' => $convert));
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -66,7 +66,7 @@ class GetUserInfomationGateway
         ";
 
         try {
-            $convert = strval($username['username']);
+            $convert = strval($username);
             $statement = $this->db->prepare($statement);
             $statement->execute(array('username' => $convert));
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -97,11 +97,11 @@ class GetUserInfomationGateway
             ";
 
         try {
-            
-            $convert = strval($username['username']);
+            $convert = strval($username);
             $statement = $this->db->prepare($statement);
             $statement->execute(array('username' => $convert));
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+         
             return intval($result[0]['final_point']);
         } catch (\PDOException $e) {
             exit($e->getMessage());

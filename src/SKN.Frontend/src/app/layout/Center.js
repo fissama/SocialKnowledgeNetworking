@@ -44,8 +44,7 @@ export default function Center() {
           <Route path="/questions/:id" component={APIQuestion} />
         )}
         <Route path="/badges" component={Badges} />
-        <Route path="/user/:id" component={Users} />
-        
+        <Route path="/user/:username" component={Users} />
         <Route path="/create-question" component={CreateQuestion} />
         {isAuthenticated ? (
           <Route path="/sign-in" component={Home} />

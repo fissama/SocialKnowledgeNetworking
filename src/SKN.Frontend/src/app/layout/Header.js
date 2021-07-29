@@ -3,6 +3,7 @@ import "../../app/styles/Header.css";
 // import { useContext } from "react";
 import LoginButton from "../common/button/LoginButton";
 import LogoutButton from "../common/button/LogoutButton";
+import { NavLink } from 'react-router-dom';
 // import { UserContext } from "./App.js";
 import { useStore } from '../stores/store';
 import { useAuth0 } from "@auth0/auth0-react";
@@ -35,7 +36,7 @@ export default function Header(props) {
         <div className="header-wrapper-right">
           {isAuthenticated ? (
             <div>
-              <a
+              <NavLink to={`/user/${user.email}`}
                 style={{
                   display: "inline-block",
                   color: "wheat",
@@ -45,7 +46,7 @@ export default function Header(props) {
                 }}
               >
                 {user.email}
-              </a>
+              </NavLink>
               <LogoutButton />
             </div>
           ) : (

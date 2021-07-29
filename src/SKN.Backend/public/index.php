@@ -104,8 +104,8 @@ switch ($uri[1]) {
             $controller = new VerifyController($dbConnection, $requestMethod, $Id);
             break;
         }
-    case 'userinfomation': {
-            $controller = new GetUserInfomationController($dbConnection, $requestMethod, $Id);
+    case 'userinformation': {
+            $controller = new GetUserInfomationController($dbConnection, $requestMethod, $Id, $Query);
             break;
         }    
     default: {

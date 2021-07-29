@@ -24,8 +24,8 @@ const Setting = {
   updateSetting: (setting) => requests.put(`/setting`, setting),
 };
 const UserInformation = {
-  getUserInformation: (UserId,Type) =>
-    requests.post(`/userinfomation/` + UserId,Type)
+  getUserInformation: (username,Type) =>
+    requests.post(`/userinformation?username=` + username,Type)
 };
 export const agent = {
   User,

@@ -73,7 +73,7 @@ export function RankingComp({user}){
     return(
         <div className="Ranking">
             <div className="Top-user">
-                <img src={process.env.PUBLIC_URL + "./images/multy-user.png"} alt="Đây là multi user"/>
+                <img src="/images/multy-user.png" alt="Đây là multi user"/>
                 <p>Top user</p>
             </div>
             <hr/>

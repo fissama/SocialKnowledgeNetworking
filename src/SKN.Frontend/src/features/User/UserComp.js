@@ -2,8 +2,10 @@ import {useState, useEffect} from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button, Container, Col, Row, Tab, Tabs, Card } from 'react-bootstrap';
 import { useStore } from "../../app/stores/store";
+import { useAuth0 } from "@auth0/auth0-react";
 import "../../app/styles/User.css";
 export default function User({match}) {
+    const { user } = useAuth0();
     const questioncount = 20;
     const answercount = 11;
     const like = 20;
@@ -51,11 +53,10 @@ export default function User({match}) {
     useEffect(() => {
         getAnswerNotVerify(match.params.username);
     }, [match.params.username]);
-
     return (
         <Container>
             <Row style={{ height: "200px" }} >
-                <img src={process.env.PUBLIC_URL + "./images/default-user-icon.png"}
+                <img src={user.picture}
                     style={{ width: "100px", margin: "auto 0", height: "100px" }}
                     alt="Đây là logo" />
                 <h3 style={{
@@ -64,7 +65,7 @@ export default function User({match}) {
                     color: "black",
                     width: "auto"
                 }
-                }>Rhea</h3>
+                }>{user.nickname}</h3>
             </Row>
             <Row style={{ height: "auto" }} fuild>
                 <Container>
@@ -75,7 +76,7 @@ export default function User({match}) {
                                     <Col>
                                         <Card>
                                             <Card.Body>
-                                                <img src={process.env.PUBLIC_URL + "./images/question.png"}
+                                                <img src={"/images/question.png"}
                                                     style={{ width: "20px", "vertical-align": "middle", height: "20px" }} ></img>
                                                 <span style={{ "vertical-align": "middle", marginLeft: "7px" }}>
                                                     {questionList.length} Questions
@@ -86,7 +87,7 @@ export default function User({match}) {
                                     <Col>
                                         <Card>
                                             <Card.Body>
-                                                <img src={process.env.PUBLIC_URL + "./images/comment.png"}
+                                                <img src={"/images/comment.png"}
                                                     style={{ width: "20px", "vertical-align": "middle", height: "20px" }} ></img>
                                                 <span style={{ "vertical-align": "middle", marginLeft: "7px" }}>
                                                     {answerList.length} Answers
@@ -97,7 +98,7 @@ export default function User({match}) {
                                     <Col>
                                         <Card>
                                             <Card.Body>
-                                                <img src={process.env.PUBLIC_URL + "./images/points.png"}
+                                                <img src={"/images/points.png"}
                                                     style={{ width: "20px", "vertical-align": "middle", height: "20px" }} 
                                                     alt=""
                                                     ></img>

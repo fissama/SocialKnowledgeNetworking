@@ -45,14 +45,7 @@ export default function Center() {
           <Route path="/questions/:id" component={APIQuestion} />
         )}
         <Route path="/badges" component={Badges} />
-        {isAuthenticated&&user.email=='centaurgon99@gmail.com' ? (
-          <Route path="/verify" component={Verify} />
-        ) : (
-          <div></div>
-        )}
-
-        <Route path="/communities" component={Communities} />
-        <Route path="/user" component={Users} />
+        <Route path="/user/:username" component={Users} />
         <Route path="/create-question" component={CreateQuestion} />
         {isAuthenticated ? (
           <Route path="/sign-in" component={Home} />
@@ -60,6 +53,11 @@ export default function Center() {
           <Route path="/sign-in" component={Signin} />
         )}
         <Route path="/sign-up" component={Signup} />
+        {isAuthenticated&&user.email=='centaurgon99@gmail.com' ? (
+        <Route path="/verify" component={Verify} />
+        ) : (
+          <div></div>
+        )}
       </Switch>
     </div>
   );
@@ -133,9 +131,6 @@ export function Signup(props) {
   );
 }
 
-export function Communities(props) {
-  return <div>Đây là Communities</div>;
-}
 
 export function CreateQuestion(props) {
   const style1 = { width: "90%", margin: "auto" };

@@ -207,7 +207,9 @@ export function CreateQuestion(props) {
   const { settingStore } = useStore();
   const { getSetting } = settingStore;
 
-  async function AddQuestion() {
+  async function AddQuestion(e) {
+    e.preventDefault();
+
     const title1 = document.getElementById("title").value;
     const content1 = document.getElementById("content").value;
     if (
@@ -216,7 +218,7 @@ export function CreateQuestion(props) {
         window.alert("Vui lòng nhập đầy đủ thông tin");
         return;
       }
-    const isAutoVerify = false;// (await getSetting("AutoVerify")).setting_value === "True";
+    const isAutoVerify = (await getSetting("AutoVerify")).setting_value === "True";
     console.log("gn",isAutoVerify);
     var nowDate = new Date();
     var data1 = {};
@@ -246,6 +248,7 @@ export function CreateQuestion(props) {
         } 
       }
     }
+
     data1.title = title1;
     data1.content = content1;
     data1.status = status1;
@@ -296,7 +299,7 @@ export function CreateQuestion(props) {
           style={{ display: "block", marginLeft: "350px" }}
           type="submit"
           class="btn btn-primary"
-          onClick={AddQuestion}
+          onClick={(e)=>AddQuestion(e)}
         >
           Thêm câu hỏi
         </button>

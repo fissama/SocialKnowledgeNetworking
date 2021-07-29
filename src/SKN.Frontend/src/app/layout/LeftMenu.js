@@ -1,9 +1,11 @@
 import {NavLink} from "react-router-dom";
-
+import { useAuth0 } from "@auth0/auth0-react";
 
 import "../../app/styles/Left-menu.css"
 
 export default function LeftMenuComp(){
+    const { isAuthenticated,user } = useAuth0();
+
     return(
         <div className="left-menu">
             <ul>
@@ -18,9 +20,16 @@ export default function LeftMenuComp(){
                 </NavLink>
                 <NavLink to = '/communities' activeStyle={{color: "red"}}>
                 </NavLink>
-                <NavLink to = '/user' activeStyle={{color: "red"}}>
-                    <li>Người dùng</li>
-                </NavLink>
+                {
+                     isAuthenticated?(<NavLink to = {'/user/'+user.email} activeStyle={{color: "red"}}>
+                     <li>Người dùng</li>
+                 </NavLink>):(<></>)
+                }
+                {
+                    isAuthenticated &&(user.nickname=="centaurgon99"?(<NavLink to = '/verify' activeStyle={{color: "red"}}>
+                    <li>Kiểm duyệt</li>
+                </NavLink>):(<></>))
+                }
             </ul>
         </div>
     )

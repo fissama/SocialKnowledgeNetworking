@@ -23,10 +23,15 @@ const Setting = {
     requests.get(`/setting?settingname=` + settingName),
   updateSetting: (setting) => requests.put(`/setting`, setting),
 };
+const UserInformation = {
+  getUserInformation: (username,Type) =>
+    requests.post(`/userinformation?username=` + username,Type)
+};
 export const agent = {
   User,
   Verify,
   Setting,
+  UserInformation
 };
 
 export default agent;

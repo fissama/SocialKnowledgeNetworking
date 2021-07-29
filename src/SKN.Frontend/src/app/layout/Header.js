@@ -26,7 +26,7 @@ export default function Header(props) {
     <div className="header">
       <div className="header-wrapper" >
         <img 
-          src={process.env.PUBLIC_URL + "./images/Logo.png"}
+          src={"/images/Logo.png"}
           style={{ width: "50px", height: "50px" }}
           alt="Đây là logo"
         />

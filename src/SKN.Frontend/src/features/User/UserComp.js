@@ -56,7 +56,7 @@ export default function User({match}) {
     return (
         <Container>
             <Row style={{ height: "200px" }} >
-                <img src={user.picture}
+                <img src={"/images/default-user-icon.png"}
                     style={{ width: "100px", margin: "auto 0", height: "100px" }}
                     alt="Đây là logo" />
                 <h3 style={{
@@ -65,7 +65,7 @@ export default function User({match}) {
                     color: "black",
                     width: "auto"
                 }
-                }>{user.nickname}</h3>
+                }>{match.params.username.split('@').slice(0, -1).join('@')}</h3>
             </Row>
             <Row style={{ height: "auto" }} fuild>
                 <Container>

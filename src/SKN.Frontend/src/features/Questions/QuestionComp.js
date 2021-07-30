@@ -165,7 +165,7 @@ export function DependentQuestion({ props }) {
           <i class="far fa-user"></i>
         </div>
         <div className="question-content">
-          <span><a href="google.com" >{props.username}</a></span>
+          <span><a href={"/user/"+props.username} >{props.username}</a></span>
           Ngày tạo:<span> {props.created_at}</span>
           Danh mục:<span> {props.category_name}</span>
           <h4>

@@ -96,7 +96,7 @@ export function UserProfileComp({user}){
             <Row>
                 <Col xs="0" style={{width:'50px','marginLeft':'-15px', 'marginRight':'10px'}} ><img src={"/images/default-user-icon.png"} alt="Đây là multy user"/></Col>
                 <Col>
-                    <Row ><Navbar.Text variant="green" >{user.username}</Navbar.Text></Row>
+                    <Row ><Navbar.Text variant="green" ><a href={"/user/"+ user.username}>{user.username}</a></Navbar.Text></Row>
                     <Row>{user.final_point} Points</Row>
                 </Col>
             </Row>

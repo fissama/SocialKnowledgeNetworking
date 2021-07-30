@@ -165,7 +165,7 @@ export function DependentQuestion({ props }) {
           <i class="far fa-user"></i>
         </div>
         <div className="question-content">
-          <span>{props.username}</span>
+          <span><a href="google.com" >{props.username}</a></span>
           Ngày tạo:<span> {props.created_at}</span>
           Danh mục:<span> {props.category_name}</span>
           <h4>
@@ -189,7 +189,7 @@ export function DependentQuestion({ props }) {
           <i class="far fa-user"></i>
         </div>
         <div className="question-content">
-          <span>{props.username}</span>
+          <span><a href={"/user/"+props.username}>{props.username}</a></span>
           Ngày tạo:<span> {props.created_at}</span>
           Danh mục:<span> {props.category_name}</span>
           <h4>
@@ -483,7 +483,7 @@ export function Answer({ answer_id }) {
       {answer.map((item) => {
         return (
           <div className="question-content" key={item.id}>
-            <span>{item.username}</span>
+            <span><a href={"/user/"+item.username}>{item.username}</a></span>
             Ngày tạo:<span> {item.created_at}</span>
             <p>{item.full_content}</p>
             {item.image_link == null ? (

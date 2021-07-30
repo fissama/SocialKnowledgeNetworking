@@ -53,7 +53,7 @@ export default function Center() {
           <Route path="/sign-in" component={Signin} />
         )}
         <Route path="/sign-up" component={Signup} />
-        {isAuthenticated&&user.email=='centaurgon99@gmail.com' ? (
+        {isAuthenticated&&user.email==process.env.REACT_APP_ADMIN ? (
         <Route path="/verify" component={Verify} />
         ) : (
           <div></div>
